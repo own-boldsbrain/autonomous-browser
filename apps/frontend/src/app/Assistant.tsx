@@ -23,6 +23,7 @@ export function Assistant() {
   const [message, setMessage] = useState("");
   const [level, setLevel] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isChatVisible, setIsChatVisible] = useState(true);
 
   useEffect(() => {
     if (assistantWorkflow) {
@@ -97,15 +98,25 @@ export function Assistant() {
             variant={level === 3 ? "default" : "outline"}
             onClick={() => setLevel(3)}
           >
-            Level 3 - general AI
+            Level 3 - general
           </Button>
         </div>
         <div className="flex items-center justify-end gap-2">
           <ThemeToggle />
+          {level > 0 && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setIsChatVisible(!isChatVisible)}
+            >
+              {isChatVisible ? "Hide Chat" : "Show Chat"}
+            </Button>
+          )}
           <Button
             size="sm"
-            variant="outline"
+            variant="default"
             isLoading={isLoading}
+            disabled={level === 2 && !assistantWorkflow}
             onClick={async () => {
               setIsLoading(true);
               try {
@@ -121,7 +132,8 @@ export function Assistant() {
                   );
                   console.log("todosContent", todosContent);
                   setTodos(todosContent.todos);
-                } else {
+                }
+                if (level === 1) {
                   const todosResponse = await triggerWorkflow({
                     workflowName: "assistantWorkflow",
                     input: {},
@@ -131,11 +143,23 @@ export function Assistant() {
                     runId: todosResponse.runId,
                   });
                 }
+                if (level === 2 && assistantWorkflow) {
+                  sendEvent({
+                    workflowId: assistantWorkflow.workflowId,
+                    runId: assistantWorkflow.runId,
+                    event: {
+                      name: "schedule",
+                      input: {},
+                    },
+                  });
+                }
               } catch (error) {}
               setIsLoading(false);
             }}
           >
-            + New {level === 0 ? "todos" : "assistant"}
+            {level === 0 && "Get todos from HN"}
+            {level === 1 && "Start HN assistant"}
+            {level === 2 && "Schedule HN autonomous"}
           </Button>
         </div>
       </div>
@@ -150,7 +174,7 @@ export function Assistant() {
             />
           )}
         </div>
-        {level > 0 && (
+        {level > 0 && isChatVisible && (
           <div className="w-1/3 flex flex-col h-full">
             <div className="flex-grow overflow-auto">
               <Chat messages={messages} level={level} />
@@ -180,7 +204,7 @@ export function Assistant() {
                           workflowId: assistantWorkflow.workflowId,
                           runId: assistantWorkflow.runId,
                           event: {
-                            name: "todoEvent",
+                            name: "message",
                             input: {
                               message,
                             },

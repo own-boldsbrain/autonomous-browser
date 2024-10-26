@@ -5,6 +5,8 @@ import {
   todosUpdate,
   toolHnSearch,
   toolUpdateTodos,
+  scheduleWorkflow,
+  getWorkflowMemory,
 } from "./functions";
 import { client } from "./client";
 import { openaiService } from "@restackio/integrations-openai";
@@ -23,6 +25,8 @@ export async function services() {
           todosUpdate,
           toolHnSearch,
           toolUpdateTodos,
+          scheduleWorkflow,
+          getWorkflowMemory,
         },
       }),
       openaiService({ client }),

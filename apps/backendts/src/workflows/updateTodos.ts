@@ -7,11 +7,11 @@ import { streamEvent, FeedbackEvent } from "./assistant";
 export async function updateTodosWorkflow({
   prompt,
   todos,
-  memoryFeedback,
+  feedbacks,
 }: {
   prompt: string;
   todos: Todo[];
-  memoryFeedback?: FeedbackEvent[];
+  feedbacks?: FeedbackEvent[];
 }) {
   const { workflowId, runId } = workflowInfo().parent!;
 
@@ -32,7 +32,7 @@ export async function updateTodosWorkflow({
         You are a personal assistant.
         You just updated todos from ${JSON.stringify(todos)} to: ${JSON.stringify(updatedTodos)}.
         In a short sentence, describe the changes you made.
-        ${memoryFeedback ? `Take into account the feedback you received: ${JSON.stringify(memoryFeedback)}` : ""}
+        ${feedbacks ? `Take into account the feedback you received: ${JSON.stringify(feedbacks)}` : ""}
         `,
     model: "gpt-4o",
     streamEvent: {

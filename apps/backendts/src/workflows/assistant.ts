@@ -1,13 +1,14 @@
-import { log, step } from "@restackio/ai/workflow";
+import { log, step, workflowInfo } from "@restackio/ai/workflow";
 import * as functions from "../functions";
 import { condition, executeChild } from "@restackio/ai/workflow";
 import { defineEvent, onEvent } from "@restackio/ai/event";
+import { defineMemory, handleMemory } from "@restackio/ai/memory";
 import { StreamEvent } from "@restackio/integrations-openai/types";
 import { ToolCallEvent } from "@restackio/integrations-openai/types";
 import { Todo } from "../functions/todos/types";
 import { updateTodosWorkflow } from "./updateTodos";
 
-export type TodoEventInput = {
+export type MessageEvent = {
   message: string;
 };
 
@@ -16,19 +17,34 @@ export type FeedbackEvent = {
   positive: boolean;
 };
 
-export const todoEvent = defineEvent<TodoEventInput>("todoEvent");
+export const messageEvent = defineEvent<MessageEvent>("message");
 export const toolCallEvent = defineEvent<ToolCallEvent>("toolCall");
 export const streamEvent = defineEvent<StreamEvent>("stream");
 
-export const todoEndEvent = defineEvent("todoEndEvent");
-
 export const feedbackEvent = defineEvent<FeedbackEvent>("feedback");
+export const scheduleEvent = defineEvent("schedule");
+export const endEvent = defineEvent("end");
+
+export const todosMemory = defineMemory<Todo[]>("todos");
+export const feedbacksMemory = defineMemory<FeedbackEvent[]>("feedbacks");
 
 export async function assistantWorkflow() {
   let todos: Todo[] = [];
-  let memoryFeedback: FeedbackEvent[] = [];
 
-  let todoEnded = false;
+  handleMemory(todosMemory, (todos: Todo[]): Todo[] => {
+    return todos;
+  });
+
+  let feedbacks: FeedbackEvent[] = [];
+
+  handleMemory(
+    feedbacksMemory,
+    (feedbacks: FeedbackEvent[]): FeedbackEvent[] => {
+      return feedbacks;
+    }
+  );
+
+  let assistantEnded = false;
 
   let openaiChatMessages: any[] = [
     {
@@ -42,11 +58,11 @@ export async function assistantWorkflow() {
 
   const tools = await step<typeof functions>({}).assistantGetTools();
 
-  onEvent(todoEvent, async ({ message }: TodoEventInput) => {
+  onEvent(messageEvent, async ({ message }: MessageEvent) => {
     const result = await step<typeof functions>({}).openaiChatCompletionsStream(
       {
         messages: openaiChatMessages,
-        newMessage: `${message}. Take into account the feedback you received: ${JSON.stringify(memoryFeedback)}`,
+        newMessage: `${message}. Take into account the feedback you received: ${JSON.stringify(feedbacks)}`,
         model: "gpt-4o",
         streamEvent: {
           workflowEventName: streamEvent.name,
@@ -77,7 +93,7 @@ export async function assistantWorkflow() {
               {
                 prompt: lastAssistantMessage as string,
                 todos,
-                memoryFeedback,
+                feedbacks,
               },
             ],
           }
@@ -121,7 +137,7 @@ export async function assistantWorkflow() {
                 {
                   prompt,
                   todos,
-                  memoryFeedback,
+                  feedbacks,
                 },
               ],
             }
@@ -163,15 +179,38 @@ export async function assistantWorkflow() {
 
   onEvent(feedbackEvent, async ({ todo, positive }: FeedbackEvent) => {
     log.info("feedbackEvent", { todo, positive });
-    memoryFeedback.push({ todo, positive });
+    feedbacks.push({ todo, positive });
+    await step<typeof functions>({}).streamEvent({
+      workflow: {
+        workflowId: workflowInfo().workflowId,
+        runId: workflowInfo().runId,
+      },
+      event: {
+        name: streamEvent.name,
+        input: {
+          chunkId: new Date().getTime(),
+          response: `${!!positive ? "Positive" : "Negative"} feedback received`,
+          isLast: true,
+        },
+      },
+    });
     return { todo, positive };
   });
 
-  onEvent(todoEndEvent, async () => {
-    todoEnded = true;
+  onEvent(scheduleEvent, async () => {
+    await step<typeof functions>({}).scheduleWorkflow({
+      parentWorkflow: {
+        workflowId: workflowInfo().workflowId,
+        runId: workflowInfo().runId,
+      },
+    });
   });
 
-  await condition(() => todoEnded);
+  onEvent(endEvent, async () => {
+    assistantEnded = true;
+  });
+
+  await condition(() => assistantEnded);
 
   return;
 }
