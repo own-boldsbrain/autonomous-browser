@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@restackio/ai": "^0.0.80",
-    "@restackio/integrations-openai": "^0.0.28",
+    "@restackio/integrations-openai": "^0.0.29",
     "@temporalio/workflow": "^1.11.2",
     "ai": "^3.4.18",
     "cors": "^2.8.5",

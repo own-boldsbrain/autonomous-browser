@@ -1,4 +1,4 @@
-# Autonomous Todo Assistant 
+# Autonomous Browser Assistant 
 
 ## Run Restack Engine
 

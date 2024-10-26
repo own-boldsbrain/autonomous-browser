@@ -24,8 +24,8 @@ importers:
         specifier: ^0.0.80
         version: 0.0.80(@swc/helpers@0.5.5)
       '@restackio/integrations-openai':
-        specifier: ^0.0.28
-        version: 0.0.28(zod@3.23.8)
+        specifier: ^0.0.29
+        version: 0.0.29(zod@3.23.8)
       '@temporalio/workflow':
         specifier: ^1.11.2
         version: 1.11.3
@@ -97,8 +97,8 @@ importers:
         specifier: ^1.1.3
         version: 1.1.3(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@restackio/ai':
-        specifier: ^0.0.75
-        version: 0.0.75(@swc/helpers@0.5.5)
+        specifier: ^0.0.80
+        version: 0.0.80(@swc/helpers@0.5.5)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -791,16 +791,12 @@ packages:
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
 
-  '@restackio/ai@0.0.75':
-    resolution: {integrity: sha512-Q3IKIJHseWM+CDoZWvgPmuv15ryZkHsCY2jq6FbdnW44MMjOOcI3QUbpZJPHLGlLZ5ucnSbQxiZBvHDDnOZfVQ==}
-    engines: {node: '>=20'}
-
   '@restackio/ai@0.0.80':
     resolution: {integrity: sha512-igmdZOTPm70lB7QWTrp7hg1M/btsTIlWUqvZbPD9bbECCrVjsyOxlvqmZuL7fxkKfa2OR0H4P9TO5VLyEwCztQ==}
     engines: {node: '>=20'}
 
-  '@restackio/integrations-openai@0.0.28':
-    resolution: {integrity: sha512-x4HllOR20/IrlmAovt5qpmYEmq8nqZpDWP6zcEA+R8kzdzjl7UmNi67jMSbonhAmFTZCpnkZWDPjjlKB6QmDKg==}
+  '@restackio/integrations-openai@0.0.29':
+    resolution: {integrity: sha512-pZmU9aeLW/yno2jtReSYyC+20tHCEmpInkwtYG3LZpmwWgyiUmz2hjxlnZ2H1r5WQQWL9xUvV2TOrk3dCKfg0A==}
 
   '@restackio/restack-sdk-cloud-ts@1.0.16':
     resolution: {integrity: sha512-oIanzD6ym6c+hZ6eMJozTaIxGmMn1hPZRwogzz4v2hdd40IpdbwuHc98bPrHjswS1rZa+vjPjLbKoSuLlZloOQ==}
@@ -4022,18 +4018,6 @@ snapshots:
 
   '@radix-ui/rect@1.1.0': {}
 
-  '@restackio/ai@0.0.75(@swc/helpers@0.5.5)':
-    dependencies:
-      '@temporalio/activity': 1.11.3
-      '@temporalio/client': 1.11.3
-      '@temporalio/worker': 1.11.3(@swc/helpers@0.5.5)
-      '@temporalio/workflow': 1.11.3
-    transitivePeerDependencies:
-      - '@swc/helpers'
-      - esbuild
-      - uglify-js
-      - webpack-cli
-
   '@restackio/ai@0.0.80(@swc/helpers@0.5.5)':
     dependencies:
       '@temporalio/activity': 1.11.3
@@ -4046,7 +4030,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@restackio/integrations-openai@0.0.28(zod@3.23.8)':
+  '@restackio/integrations-openai@0.0.29(zod@3.23.8)':
     dependencies:
       openai: 4.68.4(zod@3.23.8)
     transitivePeerDependencies:
