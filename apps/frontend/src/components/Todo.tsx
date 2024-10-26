@@ -103,7 +103,7 @@ export function Todo({
               sendEvent({
                 workflowId,
                 runId,
-                event: { name: "feedback", input: { todo, positive: false } },
+                event: { name: "feedback", input: { todo, positive: true } },
               })
             }
           >
