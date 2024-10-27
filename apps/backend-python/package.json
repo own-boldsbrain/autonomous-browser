@@ -1,9 +1,9 @@
 {
-  "name": "autonomous-backendpy",
+  "name": "autonomous-browser-backend-python",
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "devpy": "poetry shell && uvicorn src.main:app --reload",
+    "dev:py": "uvicorn src.main:app --reload",
     "services": "poetry shell && poetry run services",
     "schedule": "poetry shell && poetry run schedule"
   }

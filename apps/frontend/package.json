@@ -1,10 +1,10 @@
 {
-  "name": "autonomous-todo-frontend",
+  "name": "autonomous-browser-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "devpy": "next dev",
-    "devts": "next dev",
+    "dev:py": "next dev",
+    "dev:ts": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
