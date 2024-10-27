@@ -37,6 +37,9 @@ export function Assistant() {
         if (data.type === "todos" && Array.isArray(data.data.todos)) {
           console.log("todos data", data);
           setTodos(data.data.todos);
+        } else if (data.type === "todos" && !Array.isArray(data.data.todos)) {
+          console.log("todos data", data);
+          setTodos([]);
         } else if (data.name === "stream") {
           console.log("stream data", data);
           setMessages((prevMessages) => {

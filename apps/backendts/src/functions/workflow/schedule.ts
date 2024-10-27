@@ -14,7 +14,7 @@ export async function scheduleWorkflow({
       schedule: {
         intervals: [
           {
-            every: "10 seconds",
+            every: "30 seconds",
           },
         ],
       },
