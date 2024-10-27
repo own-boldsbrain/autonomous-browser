@@ -1,12 +1,12 @@
 {
-  "name": "autonomous-todo-backendts",
+  "name": "autonomous-browser-backend-typescript",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/server.ts",
     "start.watch": "nodemon src/server.ts",
-    "devts": "pnpm start.watch",
+    "dev:ts": "pnpm start.watch",
     "build": "tsc --build",
     "clean": "rm -rf node_modules",
     "workflow": "ts-node ./scheduleWorkflow.ts",
