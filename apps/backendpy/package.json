@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "devpy": "uvicorn src.main:app --reload",
-    "services": "poetry run services",
-    "schedule": "poetry run schedule"
+    "devpy": "poetry shell && uvicorn src.main:app --reload",
+    "services": "poetry shell && poetry run services",
+    "schedule": "poetry shell && poetry run schedule"
   }
 }
