@@ -130,11 +130,7 @@ export function Assistant() {
                     getResult: true,
                   });
                   console.log("todosResponse", todosResponse);
-                  const todosContent = JSON.parse(
-                    todosResponse.result?.choices?.[0].message.content
-                  );
-                  console.log("todosContent", todosContent);
-                  setTodos(todosContent.todos);
+                  setTodos(todosResponse.result.todos);
                 }
                 if (level === 1) {
                   const todosResponse = await triggerWorkflow({

@@ -32,6 +32,7 @@ async def stream(request: Request, workflowId: str = "default", runId: str = "de
             while True:
                 # Wait for new messages from the service
                 message = await clients[client_id].get()
+                print(f"Received message: {message}")  # Log the received message
                 yield f"data: {message}\n\n"
         except asyncio.CancelledError:
             print(f"Client {client_id} disconnected")
@@ -60,5 +61,15 @@ async def start_services():
     except Exception as err:
         print("Error running services:", err)
 
-# Run the services
-asyncio.run(start_services())
+# Check if an event loop is already running
+if __name__ == "__main__":
+    import uvicorn
+    try:
+        asyncio.run(start_services())
+    except RuntimeError as e:
+        if "asyncio.run() cannot be called from a running event loop" in str(e):
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(start_services())
+    
+    # Start the FastAPI app on port 3334
+    uvicorn.run(app, host="0.0.0.0", port=3334)

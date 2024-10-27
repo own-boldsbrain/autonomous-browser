@@ -10,7 +10,11 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "dev": {
+    "devpy": {
+      "cache": false,
+      "persistent": true
+    },
+    "devts": {
       "cache": false,
       "persistent": true
     },

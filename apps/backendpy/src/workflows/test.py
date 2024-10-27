@@ -11,8 +11,8 @@ class WorkflowInputParams(BaseModel):
 class MessageSchema(BaseModel):
     message: str = Field(..., description="The message to greet the person")
 
-@workflow.defn(name="OpenaiGreetWorkflow")
-class OpenaiGreetWorkflow:
+@workflow.defn(name="assistantWorkflow")
+class AssistantWorkflow:
     @workflow.run
     async def run(self, input: WorkflowInputParams):
         user_content = f"Greet this person {input.name}"

@@ -9,9 +9,9 @@ class InputParams(BaseModel):
 async def main():
     client = Restack()
 
-    workflow_id = f"{int(time.time() * 1000)}-OpenaiGreetWorkflow"
+    workflow_id = f"{int(time.time() * 1000)}-automatedWorkflow"
     runId = await client.schedule_workflow(
-        workflow_name="OpenaiGreetWorkflow",
+        workflow_name="automatedWorkflow",
         workflow_id=workflow_id,
         input=InputParams(name="Restack AI SDK User")
     )
