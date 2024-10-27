@@ -3,7 +3,7 @@ import * as openaiFunctions from "@restackio/integrations-openai/functions";
 import { openaiTaskQueue } from "@restackio/integrations-openai/taskQueue";
 import * as functions from "../functions";
 import zodToJsonSchema from "zod-to-json-schema";
-import { todoSchema } from "../functions/todos/types";
+import { Todo, todoSchema } from "../functions/todos/types";
 
 export async function automatedWorkflow() {
   const hnData = await step<typeof functions>({}).toolHnSearch({
@@ -15,7 +15,7 @@ export async function automatedWorkflow() {
     schema: zodToJsonSchema(todoSchema),
   };
 
-  const result = await step<typeof openaiFunctions>({
+  const todoOutput = await step<typeof openaiFunctions>({
     taskQueue: openaiTaskQueue,
   }).openaiChatCompletionsBase({
     model: "gpt-4o-mini",
@@ -27,5 +27,13 @@ export async function automatedWorkflow() {
     jsonSchema: todosJsonSchema,
   });
 
-  return result;
+  const todosResponse = todoOutput.result.choices[0].message.content;
+
+  if (!todosResponse) {
+    throw new Error("No todos response");
+  }
+
+  const updatedTodos = JSON.parse(todosResponse) as Todo[];
+
+  return { result: updatedTodos };
 }

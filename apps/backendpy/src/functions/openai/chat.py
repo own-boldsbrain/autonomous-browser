@@ -1,26 +1,33 @@
 from dotenv import load_dotenv
-from restack_ai.function import function
+from restack_ai.function import function, log
 from pydantic import BaseModel
-from .completions_base import openai_chat_completion_base, OpenAIChatInput
+from src.functions.openai.client import openai_client
+from src.functions.todos.schema import TodoSchema
+
 import os
 load_dotenv()
 
 class FunctionInputParams(BaseModel):
     user_content: str
-    message_schema: dict
 
-@function.defn(name="OpenaiGreet")
-async def openai_greet(input: FunctionInputParams) -> str:
+@function.defn(name="OpenaiTodos")
+async def openai_todos(input: FunctionInputParams):
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise ValueError("API key is not set. Please set the OPENAI_API_KEY environment variable.")
 
-    response = openai_chat_completion_base(
-        OpenAIChatInput(
-            user_content=input.user_content,
-            model="gpt-4o-mini",
-            json_schema=input.message_schema,
-            api_key=api_key,
-        )
+    client = openai_client(api_key)
+
+    completion = client.beta.chat.completions.parse(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": input.user_content},
+        ],
+        response_format=TodoSchema,
     )
-    return response.result.choices[0].message.content
+
+    message = completion.choices[0].message
+    if message.parsed:
+        return message.parsed
+    else:
+        log.error("parsed error", message.refusal)
