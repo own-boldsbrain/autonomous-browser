@@ -28,6 +28,7 @@ export const endEvent = defineEvent("end");
 export const todosMemory = defineMemory<Todo[]>("todos");
 export const feedbacksMemory = defineMemory<FeedbackEvent[]>("feedbacks");
 
+// Follow the docs to understand how the assistant works: https://docs.restack.io/examples/projects/autonomous-browser
 export async function assistantWorkflow() {
   let todos: Todo[] = [];
 
@@ -49,10 +50,15 @@ export async function assistantWorkflow() {
   let openaiChatMessages: any[] = [
     {
       role: "system",
-      content: `You are a personal assistant.
-        Only if user explicitely ask you to search hacker news, search it.
-        After you answer, another assistant will use your answer to update the todos based on your response.
-        Never mention the todos, as the user will see the created todos on a separate panel.`,
+      content: `You are an AI assistant specializing in curating tech news from Hacker News. Your tasks:
+        1. Interpret user queries and interests.
+        2. Search Hacker News for relevant, recent content.
+        3. Summarize key findings concisely, including source links.
+        4. Provide specific information or direct answers when asked.
+        5. Offer insights and recommendations based on gathered data.
+        6. Ensure all information is current and relevant.
+
+        Always search Hacker News for the latest news matching user queries. Your responses will be used to update todos separately. Do not mention todos in your replies.`,
     },
   ];
 
