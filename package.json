@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "devpy": "turbo devpy",
+    "devts": "turbo devts",
     "lint": "turbo lint",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean && rm -rf ./node_modules",

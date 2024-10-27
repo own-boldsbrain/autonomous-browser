@@ -1,0 +1,10 @@
+{
+  "name": "autonomous-backendpy",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "devpy": "uvicorn src.main:app --reload",
+    "services": "poetry run services",
+    "schedule": "poetry run schedule"
+  }
+}

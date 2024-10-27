@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "start.watch": "nodemon src/server.ts",
-    "dev": "pnpm start.watch",
+    "devts": "pnpm start.watch",
     "build": "tsc --build",
     "clean": "rm -rf node_modules",
     "workflow": "ts-node ./scheduleWorkflow.ts",
