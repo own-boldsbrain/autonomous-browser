@@ -6,10 +6,10 @@ from src.workflows.automated import AutomatedWorkflow
 
 async def main():
 
-    await client.start_service({
-        "workflows": [AutomatedWorkflow],
-        "functions": [openai_todos, tool_hn_search]
-    })
+    await client.start_service(
+        workflows= [AutomatedWorkflow],
+        functions= [openai_todos, tool_hn_search]
+    )
 
 def run_services():
     asyncio.run(main())
