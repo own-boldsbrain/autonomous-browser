@@ -25,13 +25,23 @@ export async function createUnidadeConsumidora(data: Record<string, unknown>) {
 
 export async function validateAddress(data: Record<string, unknown>) {
   try {
-    const response = await fetch(`${API_BASE_URL}/validacao-endereco/completo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    // Timeout defensivo para evitar requests pendurados que geram "TypeError: fetch failed"
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000); // 15s
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE_URL}/validacao-endereco/completo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -40,6 +50,15 @@ export async function validateAddress(data: Record<string, unknown>) {
     return await response.json();
   } catch (error) {
     console.error("Failed to validate address:", error);
+    // Normalizar erros de rede/abort para uma mensagem mais clara para a UI
+    if (error instanceof Error) {
+      if (error.name === "AbortError") {
+        throw new Error("Tempo excedido ao validar endereço (timeout de 15s). Verifique a API.");
+      }
+      if (/(Failed to fetch|fetch failed|NetworkError)/i.test(error.message)) {
+        throw new Error("Não foi possível conectar ao backend de validação de endereço. API está ativa em " + API_BASE_URL + "?");
+      }
+    }
     throw error;
   }
 }
