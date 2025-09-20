@@ -2,15 +2,8 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react"
 
@@ -29,109 +22,57 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "User",
+    email: "user@example.com",
+    avatar: "/avatars/user.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Autonomous Browser",
+      logo: Bot,
+      plan: "AI Assistant",
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Levels",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Level 0 - Automated",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Level 1 - Agentic",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Level 2 - Autonomous",
+          url: "#",
+        },
+        {
+          title: "Level 3 - General",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Features",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Todos",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Chat",
           url: "#",
         },
         {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Feedback",
           url: "#",
         },
       ],
@@ -139,19 +80,9 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "HN Content",
       url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      icon: BookOpen,
     },
   ],
 }

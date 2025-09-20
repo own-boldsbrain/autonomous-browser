@@ -24,7 +24,6 @@ export function Assistant() {
   const [messages, setMessages] = useState<Map<string, Message>>(new Map());
   const [message, setMessage] = useState("");
   const [level, setLevel] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(true);
 
   useEffect(() => {
@@ -119,10 +118,8 @@ export function Assistant() {
           <Button
             size="sm"
             variant="default"
-            isLoading={isLoading}
             disabled={level === 2 && !assistantWorkflow}
             onClick={async () => {
-              setIsLoading(true);
               try {
                 if (level === 0) {
                   const todosResponse = await triggerWorkflow({
@@ -156,7 +153,6 @@ export function Assistant() {
               } catch (error) {
                 console.error("Failed to trigger workflow:", error);
               }
-              setIsLoading(false);
             }}
           >
             {level === 0 && "Get todos from HN"}
