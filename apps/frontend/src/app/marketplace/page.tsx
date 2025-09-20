@@ -1,12 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ShoppingCart, Star, Zap, Battery, Sun, Wind } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Search,
+  ShoppingCart,
+  Star,
+  Zap,
+  Battery,
+  Sun,
+  Wind,
+} from "lucide-react";
 import { Conversation } from "ai-elements";
 
 interface Equipamento {
@@ -21,7 +41,9 @@ interface Equipamento {
 
 export default function MarketplacePage() {
   const [equipamentos, setEquipamentos] = useState<Equipamento[]>([]);
-  const [filteredEquipamentos, setFilteredEquipamentos] = useState<Equipamento[]>([]);
+  const [filteredEquipamentos, setFilteredEquipamentos] = useState<
+    Equipamento[]
+  >([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedFabricante, setSelectedFabricante] = useState("all");
@@ -39,18 +61,18 @@ export default function MarketplacePage() {
   const fetchEquipamentos = async () => {
     try {
       // Fetch from the backend API
-      const response = await fetch('http://localhost:8000/marketplace/items');
+      const response = await fetch("http://localhost:8000/marketplace/items");
       if (response.ok) {
         const data = await response.json();
         setEquipamentos(data);
       } else {
         // Fallback to local JSON if API is not available
-        const localResponse = await fetch('/api/datasheets');
+        const localResponse = await fetch("/api/datasheets");
         const data = await localResponse.json();
         setEquipamentos(data.equipamentos || []);
       }
     } catch (error) {
-      console.error('Erro ao buscar equipamentos:', error);
+      console.error("Erro ao buscar equipamentos:", error);
       // Fallback to mock data
       setEquipamentos([
         {
@@ -58,15 +80,18 @@ export default function MarketplacePage() {
           fabricante: "BYD",
           modelo: "AURO N-NLBK-39-650W",
           familia: "AURO N Series",
-          datasheet: { potencia_nominal_wp: 650, eficiencia_pct: 23.25 }
+          datasheet: { potencia_nominal_wp: 650, eficiencia_pct: 23.25 },
         },
         {
           categoria: "inversor_on_grid",
           fabricante: "Enphase",
           modelo: "IQ8",
           familia: "IQ8 Series",
-          datasheet: { potencia_nominal_ac_kw: 0.366, rendimento_max_pct: 97.5 }
-        }
+          datasheet: {
+            potencia_nominal_ac_kw: 0.366,
+            rendimento_max_pct: 97.5,
+          },
+        },
       ]);
     } finally {
       setLoading(false);
@@ -77,19 +102,25 @@ export default function MarketplacePage() {
     let filtered = equipamentos;
 
     if (searchTerm) {
-      filtered = filtered.filter(equip =>
-        equip.modelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        equip.fabricante.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (equip.familia && equip.familia.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        (equip) =>
+          equip.modelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          equip.fabricante.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (equip.familia &&
+            equip.familia.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
     if (selectedCategory !== "all") {
-      filtered = filtered.filter(equip => equip.categoria === selectedCategory);
+      filtered = filtered.filter(
+        (equip) => equip.categoria === selectedCategory
+      );
     }
 
     if (selectedFabricante !== "all") {
-      filtered = filtered.filter(equip => equip.fabricante === selectedFabricante);
+      filtered = filtered.filter(
+        (equip) => equip.fabricante === selectedFabricante
+      );
     }
 
     setFilteredEquipamentos(filtered);
@@ -97,27 +128,31 @@ export default function MarketplacePage() {
 
   const getCategoryIcon = (categoria: string) => {
     switch (categoria) {
-      case "modulo_fotovoltaico": return <Sun className="h-4 w-4" />;
+      case "modulo_fotovoltaico":
+        return <Sun className="h-4 w-4" />;
       case "inversor_on_grid":
-      case "inversor_hibrido": return <Zap className="h-4 w-4" />;
-      case "bateria_bess": return <Battery className="h-4 w-4" />;
-      default: return <Wind className="h-4 w-4" />;
+      case "inversor_hibrido":
+        return <Zap className="h-4 w-4" />;
+      case "bateria_bess":
+        return <Battery className="h-4 w-4" />;
+      default:
+        return <Wind className="h-4 w-4" />;
     }
   };
 
   const getCategoryLabel = (categoria: string) => {
     const labels: Record<string, string> = {
-      "modulo_fotovoltaico": "Módulo Fotovoltaico",
-      "inversor_on_grid": "Inversor On-Grid",
-      "inversor_hibrido": "Inversor Híbrido",
-      "bateria_bess": "Bateria",
-      "controlador_carga_mppt": "Controlador MPPT"
+      modulo_fotovoltaico: "Módulo Fotovoltaico",
+      inversor_on_grid: "Inversor On-Grid",
+      inversor_hibrido: "Inversor Híbrido",
+      bateria_bess: "Bateria",
+      controlador_carga_mppt: "Controlador MPPT",
     };
     return labels[categoria] || categoria;
   };
 
-  const uniqueCategories = [...new Set(equipamentos.map(e => e.categoria))];
-  const uniqueFabricantes = [...new Set(equipamentos.map(e => e.fabricante))];
+  const uniqueCategories = [...new Set(equipamentos.map((e) => e.categoria))];
+  const uniqueFabricantes = [...new Set(equipamentos.map((e) => e.fabricante))];
 
   if (loading) {
     return (
@@ -135,7 +170,8 @@ export default function MarketplacePage() {
           Yello Solar Hub Marketplace
         </h1>
         <p className="text-xl text-muted-foreground">
-          One Stop Solar Shop - Equipamentos certificados para sua instalação fotovoltaica
+          One Stop Solar Shop - Equipamentos certificados para sua instalação
+          fotovoltaica
         </p>
       </div>
 
@@ -159,13 +195,16 @@ export default function MarketplacePage() {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Categoria</label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Todas as categorias" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todas as categorias</SelectItem>
-                  {uniqueCategories.map(category => (
+                  {uniqueCategories.map((category) => (
                     <SelectItem key={category} value={category}>
                       {getCategoryLabel(category)}
                     </SelectItem>
@@ -175,13 +214,16 @@ export default function MarketplacePage() {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Fabricante</label>
-              <Select value={selectedFabricante} onValueChange={setSelectedFabricante}>
+              <Select
+                value={selectedFabricante}
+                onValueChange={setSelectedFabricante}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Todos os fabricantes" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os fabricantes</SelectItem>
-                  {uniqueFabricantes.map(fabricante => (
+                  {uniqueFabricantes.map((fabricante) => (
                     <SelectItem key={fabricante} value={fabricante}>
                       {fabricante}
                     </SelectItem>
@@ -230,7 +272,9 @@ export default function MarketplacePage() {
                       <p>Potência: {equip.datasheet.potencia_nominal_wp}W</p>
                     )}
                     {equip.datasheet.potencia_nominal_ac_kw && (
-                      <p>Potência AC: {equip.datasheet.potencia_nominal_ac_kw}kW</p>
+                      <p>
+                        Potência AC: {equip.datasheet.potencia_nominal_ac_kw}kW
+                      </p>
                     )}
                     {equip.datasheet.eficiencia_pct && (
                       <p>Eficiência: {equip.datasheet.eficiencia_pct}%</p>
@@ -277,8 +321,9 @@ export default function MarketplacePage() {
                 {
                   id: "1",
                   role: "assistant",
-                  content: "Olá! Sou seu assistente especializado em energia solar. Como posso ajudar você a encontrar o equipamento ideal para seu projeto?"
-                }
+                  content:
+                    "Olá! Sou seu assistente especializado em energia solar. Como posso ajudar você a encontrar o equipamento ideal para seu projeto?",
+                },
               ]}
               onSendMessage={(message: any) => {
                 console.log("Mensagem enviada:", message);

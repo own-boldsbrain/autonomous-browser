@@ -122,3 +122,12 @@
 code {
   white-space: pre-wrap !important;
 }
+
+/* Custom animation delays for chat loading dots */
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
