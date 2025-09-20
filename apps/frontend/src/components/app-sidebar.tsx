@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import {
-  BookOpen,
   Bot,
-  SquareTerminal,
+  ShoppingCart,
+  MessageSquare,
+  Sun,
+  Home,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -22,57 +24,57 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "User",
-    email: "user@example.com",
+    name: "Yello Solar Hub",
+    email: "contato@yellosolarhub.com",
     avatar: "/avatars/user.jpg",
   },
   teams: [
     {
-      name: "Autonomous Browser",
-      logo: Bot,
-      plan: "AI Assistant",
+      name: "Yello Solar Hub",
+      logo: Sun,
+      plan: "One Stop Solar Shop",
     },
   ],
   navMain: [
     {
-      title: "Levels",
+      title: "Navegação",
       url: "#",
-      icon: SquareTerminal,
+      icon: Home,
       isActive: true,
       items: [
         {
-          title: "Level 0 - Automated",
-          url: "#",
+          title: "Dashboard",
+          url: "/",
         },
         {
-          title: "Level 1 - Agentic",
-          url: "#",
+          title: "Marketplace",
+          url: "/marketplace",
         },
         {
-          title: "Level 2 - Autonomous",
-          url: "#",
-        },
-        {
-          title: "Level 3 - General",
-          url: "#",
+          title: "Chat IA",
+          url: "/chat",
         },
       ],
     },
     {
-      title: "Features",
+      title: "Homologação",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Todos",
+          title: "Criar UC",
           url: "#",
         },
         {
-          title: "Chat",
+          title: "Validar Endereço",
           url: "#",
         },
         {
-          title: "Feedback",
+          title: "Analisar Consumo",
+          url: "#",
+        },
+        {
+          title: "Gerar PRODIST",
           url: "#",
         },
       ],
@@ -80,9 +82,14 @@ const data = {
   ],
   projects: [
     {
-      name: "HN Content",
-      url: "#",
-      icon: BookOpen,
+      name: "Equipamentos Solares",
+      url: "/marketplace",
+      icon: ShoppingCart,
+    },
+    {
+      name: "Consultoria IA",
+      url: "/chat",
+      icon: MessageSquare,
     },
   ],
 }
