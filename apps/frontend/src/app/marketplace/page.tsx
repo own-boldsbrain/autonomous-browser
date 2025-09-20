@@ -74,6 +74,46 @@ export default function MarketplacePage() {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
+  const fetchEquipamentos = async () => {
+    try {
+      // Fetch from the backend API
+      const response = await fetch("http://localhost:8000/marketplace/items");
+      if (response.ok) {
+        const data = await response.json();
+        setEquipamentos(data);
+      } else {
+        // Fallback to local JSON if API is not available
+        const localResponse = await fetch("/api/datasheets");
+        const data = await localResponse.json();
+        setEquipamentos(data.equipamentos || []);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar equipamentos:", error);
+      // Fallback to mock data
+      setEquipamentos([
+        {
+          categoria: "modulo_fotovoltaico",
+          fabricante: "BYD",
+          modelo: "AURO N-NLBK-39-650W",
+          familia: "AURO N Series",
+          datasheet: { potencia_nominal_wp: 650, eficiencia_pct: 23.25 },
+        },
+        {
+          categoria: "inversor_on_grid",
+          fabricante: "Enphase",
+          modelo: "IQ8",
+          familia: "IQ8 Series",
+          datasheet: {
+            potencia_nominal_ac_kw: 0.366,
+            rendimento_max_pct: 97.5,
+          },
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchEquipamentos();
   }, []);
