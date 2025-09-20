@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -26,17 +26,31 @@ import {
   Battery,
   Sun,
   Wind,
+  Send,
+  Bot,
+  User,
 } from "lucide-react";
-import { Conversation } from "ai-elements";
 
 interface Equipamento {
   categoria: string;
   fabricante: string;
   modelo: string;
   familia?: string;
-  datasheet?: any;
-  certificacao?: any;
-  urls?: any;
+  datasheet?: {
+    potencia_nominal_wp?: number;
+    potencia_nominal_ac_kw?: number;
+    eficiencia_pct?: number;
+    rendimento_max_pct?: number;
+  };
+  certificacao?: Record<string, unknown>;
+  urls?: Record<string, unknown>;
+}
+
+interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: Date;
 }
 
 export default function MarketplacePage() {
@@ -49,56 +63,22 @@ export default function MarketplacePage() {
   const [selectedFabricante, setSelectedFabricante] = useState("all");
   const [loading, setLoading] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
+    {
+      id: "1",
+      role: "assistant",
+      content: "Olá! Sou seu assistente especializado em energia solar. Como posso ajudar você a encontrar o equipamento ideal para seu projeto?",
+      timestamp: new Date(),
+    },
+  ]);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     fetchEquipamentos();
   }, []);
 
-  useEffect(() => {
-    filterEquipamentos();
-  }, [equipamentos, searchTerm, selectedCategory, selectedFabricante]);
-
-  const fetchEquipamentos = async () => {
-    try {
-      // Fetch from the backend API
-      const response = await fetch("http://localhost:8000/marketplace/items");
-      if (response.ok) {
-        const data = await response.json();
-        setEquipamentos(data);
-      } else {
-        // Fallback to local JSON if API is not available
-        const localResponse = await fetch("/api/datasheets");
-        const data = await localResponse.json();
-        setEquipamentos(data.equipamentos || []);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar equipamentos:", error);
-      // Fallback to mock data
-      setEquipamentos([
-        {
-          categoria: "modulo_fotovoltaico",
-          fabricante: "BYD",
-          modelo: "AURO N-NLBK-39-650W",
-          familia: "AURO N Series",
-          datasheet: { potencia_nominal_wp: 650, eficiencia_pct: 23.25 },
-        },
-        {
-          categoria: "inversor_on_grid",
-          fabricante: "Enphase",
-          modelo: "IQ8",
-          familia: "IQ8 Series",
-          datasheet: {
-            potencia_nominal_ac_kw: 0.366,
-            rendimento_max_pct: 97.5,
-          },
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterEquipamentos = () => {
+  const filterEquipamentos = useCallback(() => {
     let filtered = equipamentos;
 
     if (searchTerm) {
@@ -124,7 +104,11 @@ export default function MarketplacePage() {
     }
 
     setFilteredEquipamentos(filtered);
-  };
+  }, [equipamentos, searchTerm, selectedCategory, selectedFabricante]);
+
+  useEffect(() => {
+    filterEquipamentos();
+  }, [filterEquipamentos]);
 
   const getCategoryIcon = (categoria: string) => {
     switch (categoria) {
@@ -149,6 +133,51 @@ export default function MarketplacePage() {
       controlador_carga_mppt: "Controlador MPPT",
     };
     return labels[categoria] || categoria;
+  };
+
+  const sendMessage = async () => {
+    if (!currentMessage.trim()) return;
+
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: "user",
+      content: currentMessage,
+      timestamp: new Date(),
+    };
+
+    setChatMessages((prev) => [...prev, userMessage]);
+    setCurrentMessage("");
+    setIsTyping(true);
+
+    // Simulate AI response (replace with actual API call)
+    setTimeout(() => {
+      const aiResponse: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: generateAIResponse(currentMessage),
+        timestamp: new Date(),
+      };
+      setChatMessages((prev) => [...prev, aiResponse]);
+      setIsTyping(false);
+    }, 1000);
+  };
+
+  const generateAIResponse = (userMessage: string): string => {
+    const lowerMessage = userMessage.toLowerCase();
+
+    if (lowerMessage.includes("módulo") || lowerMessage.includes("painel")) {
+      return "Para módulos fotovoltaicos, recomendo considerar a eficiência, potência e garantia. Temos opções da BYD, Canadian Solar e JinkoSolar com certificação INMETRO. Qual potência você precisa para seu projeto?";
+    }
+
+    if (lowerMessage.includes("inversor")) {
+      return "Para inversores, o tipo depende se é on-grid ou híbrido. Temos opções da Growatt, Deye e Enphase. Qual a potência do seu sistema e se precisa de bateria?";
+    }
+
+    if (lowerMessage.includes("bateria")) {
+      return "Para sistemas de bateria, recomendamos tecnologias LiFePO4 pela segurança e durabilidade. Temos opções da BYD e Pylontech com garantia de 10 anos.";
+    }
+
+    return "Posso ajudar você a encontrar equipamentos solares certificados. Me diga mais sobre seu projeto: tipo de instalação, potência necessária, localização, etc.";
   };
 
   const uniqueCategories = [...new Set(equipamentos.map((e) => e.categoria))];
@@ -309,28 +338,81 @@ export default function MarketplacePage() {
       {/* AI Chat Modal */}
       {chatOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg w-full max-w-2xl h-3/4 p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Assistente Solar IA</h2>
-              <Button variant="ghost" onClick={() => setChatOpen(false)}>
+          <Card className="w-full max-w-2xl h-3/4 flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="flex items-center gap-2">
+                <Bot className="h-5 w-5" />
+                Assistente Solar IA
+              </CardTitle>
+              <Button variant="ghost" size="sm" onClick={() => setChatOpen(false)}>
                 ✕
               </Button>
-            </div>
-            <Conversation
-              messages={[
-                {
-                  id: "1",
-                  role: "assistant",
-                  content:
-                    "Olá! Sou seu assistente especializado em energia solar. Como posso ajudar você a encontrar o equipamento ideal para seu projeto?",
-                },
-              ]}
-              onSendMessage={(message: any) => {
-                console.log("Mensagem enviada:", message);
-                // Aqui você integraria com sua API de IA
-              }}
-            />
-          </div>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col space-y-4 overflow-hidden">
+              {/* Chat Messages */}
+              <div className="flex-1 overflow-y-auto space-y-4 p-4 border rounded-lg">
+                {chatMessages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex gap-3 ${
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    {message.role === "assistant" && (
+                      <div className="flex-shrink-0">
+                        <Bot className="h-8 w-8 text-primary" />
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                        message.role === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted"
+                      }`}
+                    >
+                      <p className="text-sm">{message.content}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                    {message.role === "user" && (
+                      <div className="flex-shrink-0">
+                        <User className="h-8 w-8 text-primary" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {isTyping && (
+                  <div className="flex gap-3 justify-start">
+                    <div className="flex-shrink-0">
+                      <Bot className="h-8 w-8 text-primary" />
+                    </div>
+                    <div className="bg-muted px-4 py-2 rounded-lg">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce animation-delay-100"></div>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce animation-delay-200"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Chat Input */}
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Digite sua pergunta sobre energia solar..."
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                  className="flex-1"
+                />
+                <Button onClick={sendMessage} disabled={!currentMessage.trim()}>
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

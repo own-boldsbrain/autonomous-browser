@@ -4,16 +4,14 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Message, PromptInput } from "ai-elements";
-import { Bot, User, Zap, Sun, Battery, Settings } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Bot, User, Zap, Sun, Battery, Settings, Send } from "lucide-react";
 
 interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
-  type?: "message" | "reasoning" | "tool" | "task" | "sources";
-  metadata?: Record<string, unknown>;
 }
 
 export default function ChatPage() {
@@ -23,24 +21,23 @@ export default function ChatPage() {
       role: "assistant",
       content: "Olá! Sou o assistente especializado da Yello Solar Hub. Como posso ajudar você hoje com seu projeto de energia solar?",
       timestamp: new Date(),
-      type: "message"
     }
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = async (message: string) => {
-    if (!message.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputValue.trim()) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: "user",
-      content: message,
+      content: inputValue,
       timestamp: new Date(),
-      type: "message"
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue("");
     setIsLoading(true);
 
@@ -51,9 +48,8 @@ export default function ChatPage() {
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: generateResponse(message),
+        content: generateResponse(currentInput),
         timestamp: new Date(),
-        type: "message"
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -120,7 +116,10 @@ export default function ChatPage() {
                 key={index}
                 variant="outline"
                 className="h-auto p-4 flex flex-col items-center gap-2"
-                onClick={() => handleSendMessage(action.message)}
+                onClick={() => {
+                  setInputValue(action.message);
+                  handleSendMessage();
+                }}
                 disabled={isLoading}
               >
                 {action.icon}
@@ -154,11 +153,7 @@ export default function ChatPage() {
                       ? "bg-primary text-primary-foreground ml-auto"
                       : "bg-muted"
                   }`}>
-                    <Message
-                      role={message.role}
-                      content={message.content}
-                      timestamp={message.timestamp}
-                    />
+                    <p className="text-sm">{message.content}</p>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     {message.timestamp.toLocaleTimeString()}
@@ -198,13 +193,19 @@ export default function ChatPage() {
       {/* Input */}
       <Card>
         <CardContent className="p-4">
-          <PromptInput
-            value={inputValue}
-            onChange={setInputValue}
-            onSubmit={handleSendMessage}
-            placeholder="Digite sua pergunta sobre energia solar..."
-            disabled={isLoading}
-          />
+          <div className="flex gap-2">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              placeholder="Digite sua pergunta sobre energia solar..."
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button onClick={handleSendMessage} disabled={!inputValue.trim() || isLoading}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
           <div className="flex gap-2 mt-2">
             <Badge variant="secondary" className="text-xs">
               💡 Dicas: dimensionamento, equipamentos, homologação
