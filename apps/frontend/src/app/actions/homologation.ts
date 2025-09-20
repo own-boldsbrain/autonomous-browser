@@ -25,7 +25,7 @@ export async function createUnidadeConsumidora(data: Record<string, unknown>) {
 
 export async function validateAddress(data: Record<string, unknown>) {
   try {
-    const response = await fetch(`${API_BASE_URL}/endereco/validate`, {
+    const response = await fetch(`${API_BASE_URL}/validacao-endereco/completo`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,8 +46,8 @@ export async function validateAddress(data: Record<string, unknown>) {
 
 export async function analyzeConsumption(ucId: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/ucs/${ucId}/analise-consumo`, {
-      method: "POST",
+    const response = await fetch(`${API_BASE_URL}/analises/unidade-consumidora/${ucId}`, {
+      method: "GET",
     });
 
     if (!response.ok) {
@@ -63,8 +63,32 @@ export async function analyzeConsumption(ucId: string) {
 
 export async function generateProdistForm(ucId: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/ucs/${ucId}/formulario-prodist`, {
+    const response = await fetch(`${API_BASE_URL}/formularios-prodist/`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        codigo_formulario: `PROD-${ucId}`,
+        ug_id: ucId,
+        versao_formulario: "PRODIST 2023",
+        acessante: {
+          nome: "Nome do Acessante",
+          tipo_documento: "CPF",
+          documento: "123.456.789-00",
+          email: "email@exemplo.com",
+          telefone: "(11) 99999-9999"
+        },
+        distribuidora: "ENEL",
+        dados_conexao: {
+          potencia_instalada_kw: 5.0,
+          tensao_conexao_v: 220,
+          codigo_uc: ucId,
+          modalidade: "autoconsumo_remoto",
+          classificacao: "residencial",
+          tipo_fonte: "solar"
+        }
+      }),
     });
 
     if (!response.ok) {
