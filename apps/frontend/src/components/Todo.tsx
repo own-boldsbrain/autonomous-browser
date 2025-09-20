@@ -76,7 +76,7 @@ export function Todo({
       <CardContent>
         <div className="flex items-center">
           {todo.sources.map((source) => (
-            <a href={source} target="_blank" rel="noreferrer">
+            <a href={source} target="_blank" rel="noreferrer" key={source}>
               {source}
             </a>
           ))}

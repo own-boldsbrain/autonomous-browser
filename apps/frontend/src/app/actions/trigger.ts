@@ -8,7 +8,7 @@ export async function triggerWorkflow({
   getResult,
 }: {
   workflowName: string;
-  input: Record<string, any>;
+  input: Record<string, unknown>;
   taskQueue?: string;
   getResult?: boolean;
 }) {

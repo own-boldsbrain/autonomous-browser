@@ -10,7 +10,7 @@ export async function sendEvent({
   runId: string;
   event: {
     name: string;
-    input: any;
+    input: Record<string, unknown>;
   };
 }) {
   console.log("sending event workflowId", workflowId);

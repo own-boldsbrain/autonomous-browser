@@ -8,7 +8,9 @@ import { Button } from "../components/ui/button";
 import { Todos } from "../components/Todos";
 import { TodoType } from "../components/Todo";
 import { Input } from "../components/ui/input";
+import { Message } from "@/lib/types";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Zap, Bot, Brain, Cpu } from "lucide-react";
 
 type AssistantWorkflow = {
   workflowId: string;
@@ -19,7 +21,7 @@ export function Assistant() {
   const [assistantWorkflow, setAssistantWorkflow] =
     useState<AssistantWorkflow>();
   const [todos, setTodos] = useState<TodoType[]>([]);
-  const [messages, setMessages] = useState<Map<string, any>>(new Map());
+  const [messages, setMessages] = useState<Map<string, Message>>(new Map());
   const [message, setMessage] = useState("");
   const [level, setLevel] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +78,7 @@ export function Assistant() {
               setLevel(0);
             }}
           >
-            Level 0 - automated
+            <Zap className="h-4 w-4 mr-2" /> Level 0 - automated
           </Button>
           <Button
             size="sm"
@@ -86,22 +88,21 @@ export function Assistant() {
               setLevel(1);
             }}
           >
-            Level 1 - agentic
+            <Bot className="h-4 w-4 mr-2" /> Level 1 - agentic
           </Button>
           <Button
             size="sm"
             variant={level === 2 ? "default" : "outline"}
             onClick={() => setLevel(2)}
           >
-            Level 2 - autonomous
+            <Brain className="h-4 w-4 mr-2" /> Level 2 - autonomous
           </Button>
           <Button
-            disabled
             size="sm"
             variant={level === 3 ? "default" : "outline"}
             onClick={() => setLevel(3)}
           >
-            Level 3 - general
+            <Cpu className="h-4 w-4 mr-2" /> Level 3 - general
           </Button>
         </div>
         <div className="flex items-center justify-end gap-2">
@@ -152,7 +153,9 @@ export function Assistant() {
                     },
                   });
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("Failed to trigger workflow:", error);
+              }
               setIsLoading(false);
             }}
           >
@@ -162,8 +165,8 @@ export function Assistant() {
           </Button>
         </div>
       </div>
-      <div className="flex w-full h-full">
-        <div className="w-2/3 overflow-auto">
+      <div className="flex flex-col md:flex-row w-full h-full">
+        <div className="w-full md:w-2/3 overflow-auto">
           {todos && (
             <Todos
               todos={todos}
@@ -174,17 +177,21 @@ export function Assistant() {
           )}
         </div>
         {level > 0 && isChatVisible && (
-          <div className="w-1/3 flex flex-col h-full">
+          <div className="w-full md:w-1/3 flex flex-col h-full">
             <div className="flex-grow overflow-auto">
-              <Chat messages={messages} level={level} />
+              <Chat messages={messages} />
             </div>
             {assistantWorkflow && (
               <div className="sticky bottom-0 w-full">
                 <Input
                   type="text"
                   value={message}
-                  onChange={(e: any) => setMessage(e.target.value)}
-                  onKeyDown={async (e: any) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setMessage(e.target.value)
+                  }
+                  onKeyDown={async (
+                    e: React.KeyboardEvent<HTMLInputElement>
+                  ) => {
                     if (e.key === "Enter" && assistantWorkflow) {
                       try {
                         // Add the user's message to the messages state
@@ -211,7 +218,7 @@ export function Assistant() {
                         });
                         setMessage("");
                       } catch (error) {
-                        alert("Failed to send event.");
+                        console.error("Failed to send event:", error);
                       }
                     }
                   }}

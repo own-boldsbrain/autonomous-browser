@@ -1,12 +1,8 @@
 "use client";
 
-export function Chat({
-  messages,
-  level,
-}: {
-  messages: Map<string, any>;
-  level: number;
-}) {
+import { Message } from "@/lib/types";
+
+export function Chat({ messages }: { messages: Map<string, Message> }) {
   return (
     <div className="p-4">
       <ul className="space-y-2">
