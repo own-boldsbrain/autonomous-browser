@@ -1,4 +1,4 @@
-from restack_ai.workflow import workflow, workflow_import
+from src.restack_ai.workflow import workflow, workflow_import
 from datetime import timedelta
 from pydantic import BaseModel
 from src.functions.hn.schema import HnSearchInput
