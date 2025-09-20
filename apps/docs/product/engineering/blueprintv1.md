@@ -12,19 +12,17 @@ Let me search for relevant code in the workspace related to JTBDs, User Inputs, 
 
 First, let me look for files containing "JTBD" or "Jobs To Be Done": I understand that the developer is asking to extract a blueprint with JTBDs (Jobs To Be Done), User Inputs, and System Outputs from the codebase. Let me search systematically for relevant code in this workspace.
 
-Let's start by searching for specific terms in Portuguese and English that might be relevant: I understand that the developer wants me to extract a blueprint with JTBDs (Jobs To Be Done), User Inputs, and System Outputs from this autonomous-browser project. 
+Let's start by searching for specific terms in Portuguese and English that might be relevant: I understand that the developer wants me to extract a blueprint with JTBDs (Jobs To Be Done), User Inputs, and System Outputs from this autonomous-browser project.
 
 Let me search the codebase for relevant information to build this blueprint. First, I'll look for the core structure of the application. I'll help you find code relevant to extracting a blueprint with JTBDs (Jobs To Be Done), User Inputs, and System Outputs from the autonomous-browser workspace. Let me search for the key components of this system.
 
 First, let's examine the main workflows and architecture of the application to understand its structure: I'll help you extract the blueprint with the JTBDs (Jobs To Be Done), User Inputs, and System Outputs from this autonomous browser assistant project.
 
-Let me analyze the project structure and extract the key components of the blueprint. 
+Let me analyze the project structure and extract the key components of the blueprint.
 
-Let me examine the core workflow files to understand the system better: 
+Let me examine the core workflow files to understand the system better:
 
-Let's examine the other workflow files: 
-
-
+Let's examine the other workflow files
 
 Let's look at the frontend part to understand the user interface: Let's take a look at the Todo components: Let me also examine the other tools and functions to get a complete picture: Let me check what todo types are defined: Based on the information I've gathered, here's the blueprint for the Autonomous Browser Assistant:
 
@@ -56,16 +54,16 @@ Let's look at the frontend part to understand the user interface: Let's take a l
 
 The system implements three progressive levels of autonomy:
 
-1. **Level 0 - Automated**: 
+1. **Level 0 - Automated**:
    - Simple automation that fetches data and creates todos without user interaction
    - No feedback loop, one-time execution
 
-2. **Level 1 - Agentic**: 
+2. **Level 1 - Argentic**:
    - Interactive agent that responds to user queries
    - Can search for specific information based on user requests
    - Creates todos based on user-agent conversation
 
-3. **Level 2 - Autonomous**: 
+3. **Level 2 - Autonomous**:
    - Self-scheduling periodic updates
    - Uses memory and feedback to improve recommendations
    - Operates with minimal user intervention after initial setup
@@ -75,7 +73,7 @@ The system implements three progressive levels of autonomy:
 
 ## User Inputs
 
-1. **Chat Messages**: 
+1. **Chat Messages**:
    - Free-form text input to communicate with the AI assistant
    - Queries about specific topics or requests for information
 
