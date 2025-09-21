@@ -422,29 +422,51 @@ export default function MarketplacePage() {
 
       {/* AI Chat Modal */}
       {chatOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="chat-modal-title"
+          aria-describedby="chat-modal-description"
+        >
           <Card className="w-full max-w-2xl h-3/4 flex flex-col">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="flex items-center gap-2">
-                <Bot className="h-5 w-5" />
+              <CardTitle id="chat-modal-title" className="flex items-center gap-2">
+                <Bot className="h-5 w-5" aria-hidden="true" />
                 Assistente Solar IA
               </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => setChatOpen(false)}>
+              <div id="chat-modal-description" className="sr-only">
+                Chat com assistente de IA especializado em equipamentos solares
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setChatOpen(false)}
+                aria-label="Fechar chat com assistente IA"
+              >
                 ✕
               </Button>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col space-y-4 overflow-hidden">
               {/* Chat Messages */}
-              <div className="flex-1 overflow-y-auto space-y-4 p-4 border rounded-lg">
+              <div
+                className="flex-1 overflow-y-auto space-y-4 p-4 border rounded-lg"
+                role="log"
+                aria-label="Mensagens do chat"
+                aria-live="polite"
+                aria-atomic="false"
+              >
                 {chatMessages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex gap-3 ${
                       message.role === "user" ? "justify-end" : "justify-start"
                     }`}
+                    role="article"
+                    aria-label={`Mensagem de ${message.role === "user" ? "você" : "assistente"}`}
                   >
                     {message.role === "assistant" && (
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0" aria-hidden="true">
                         <Bot className="h-8 w-8 text-primary" />
                       </div>
                     )}
@@ -456,24 +478,24 @@ export default function MarketplacePage() {
                       }`}
                     >
                       <p className="text-sm">{message.content}</p>
-                      <p className="text-xs opacity-70 mt-1">
+                      <time className="text-xs opacity-70 mt-1 block" dateTime={message.timestamp.toISOString()}>
                         {message.timestamp.toLocaleTimeString()}
-                      </p>
+                      </time>
                     </div>
                     {message.role === "user" && (
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0" aria-hidden="true">
                         <User className="h-8 w-8 text-primary" />
                       </div>
                     )}
                   </div>
                 ))}
                 {isTyping && (
-                  <div className="flex gap-3 justify-start">
-                    <div className="flex-shrink-0">
+                  <div className="flex gap-3 justify-start" role="status" aria-label="Assistente está digitando">
+                    <div className="flex-shrink-0" aria-hidden="true">
                       <Bot className="h-8 w-8 text-primary" />
                     </div>
                     <div className="bg-muted px-4 py-2 rounded-lg">
-                      <div className="flex space-x-1">
+                      <div className="flex space-x-1" aria-hidden="true">
                         <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-current rounded-full animate-bounce animation-delay-100"></div>
                         <div className="w-2 h-2 bg-current rounded-full animate-bounce animation-delay-200"></div>
@@ -484,16 +506,25 @@ export default function MarketplacePage() {
               </div>
 
               {/* Chat Input */}
-              <div className="flex gap-2">
+              <div className="flex gap-2" role="form" aria-label="Enviar mensagem para assistente">
                 <Input
                   placeholder="Digite sua pergunta sobre energia solar..."
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && sendMessage()}
                   className="flex-1"
+                  aria-describedby="chat-input-help"
+                  autoFocus
                 />
-                <Button onClick={sendMessage} disabled={!currentMessage.trim()}>
-                  <Send className="h-4 w-4" />
+                <div id="chat-input-help" className="sr-only">
+                  Digite sua pergunta e pressione Enter ou clique no botão enviar
+                </div>
+                <Button
+                  onClick={sendMessage}
+                  disabled={!currentMessage.trim() || isTyping}
+                  aria-label="Enviar mensagem"
+                >
+                  <Send className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
             </CardContent>

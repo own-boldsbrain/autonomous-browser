@@ -43,47 +43,67 @@ export function Todo({
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full" role="article" aria-labelledby={`todo-title-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}>
       <CardHeader className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
-          <CardTitle className={isComplete ? "line-through" : ""}>
+          <CardTitle
+            id={`todo-title-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}
+            className={isComplete ? "line-through" : ""}
+          >
             <input
               type="checkbox"
-              id={`complete-${todo.title}`}
+              id={`complete-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}
               name="complete"
-              className="mr-2"
+              className="mr-2 focus:ring-2 focus:ring-primary"
               checked={isComplete}
               onChange={handleCheckboxChange}
+              aria-describedby={`todo-desc-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}
             />
-            <label htmlFor={`complete-${todo.title}`}>{todo.title}</label>
+            <label
+              htmlFor={`complete-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}
+              className="cursor-pointer"
+            >
+              {todo.title}
+            </label>
           </CardTitle>
           <div>
             {todo.type === "hn" && (
               <Image
                 src="/yc-logo.svg"
-                alt={todo.type}
+                alt="Y Combinator"
                 width={22}
                 height={22}
               />
             )}
           </div>
         </div>
-        <CardDescription className="flex flex-col gap-2">
-          <p>{todo.timestamp}</p>
+        <CardDescription
+          id={`todo-desc-${todo.title.replace(/\s+/g, '-').toLowerCase()}`}
+          className="flex flex-col gap-2"
+        >
+          <time dateTime={new Date(todo.timestamp).toISOString()}>{todo.timestamp}</time>
           <p>{todo.description}</p>
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center">
-          {todo.sources.map((source) => (
-            <a href={source} target="_blank" rel="noreferrer" key={source}>
-              {source}
+        <div className="flex items-center gap-2 flex-wrap" role="list" aria-label="Fontes relacionadas">
+          {todo.sources.map((source, index) => (
+            <a
+              href={source}
+              target="_blank"
+              rel="noreferrer"
+              key={source}
+              role="listitem"
+              className="text-blue-600 hover:text-blue-800 underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-1"
+              aria-label={`Fonte ${index + 1}: ${source}`}
+            >
+              Fonte {index + 1}
             </a>
           ))}
         </div>
       </CardContent>
       {level > 1 && workflowId && runId && (
-        <CardFooter className="flex gap-2">
+        <CardFooter className="flex gap-2" role="group" aria-label="Feedback da tarefa">
           <Button
             size="icon"
             variant="destructive"
@@ -94,8 +114,10 @@ export function Todo({
                 event: { name: "feedback", input: { todo, positive: false } },
               })
             }
+            aria-label="Feedback negativo para esta tarefa"
+            title="Não gostei desta tarefa"
           >
-            <ThumbsDown className="h-[1rem] w-[1rem]" />
+            <ThumbsDown className="h-[1rem] w-[1rem]" aria-hidden="true" />
           </Button>
           <Button
             size="icon"
@@ -106,8 +128,10 @@ export function Todo({
                 event: { name: "feedback", input: { todo, positive: true } },
               })
             }
+            aria-label="Feedback positivo para esta tarefa"
+            title="Gostei desta tarefa"
           >
-            <ThumbsUp className="h-[1rem] w-[1rem]" />
+            <ThumbsUp className="h-[1rem] w-[1rem]" aria-hidden="true" />
           </Button>
         </CardFooter>
       )}
