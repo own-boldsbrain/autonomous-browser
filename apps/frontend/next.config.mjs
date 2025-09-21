@@ -1,7 +1,3 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@restackio/ai'],
-  },
-}
+const nextConfig = {};
 export default nextConfig;
