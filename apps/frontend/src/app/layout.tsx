@@ -1,9 +1,11 @@
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata = {
-  title: "Autonomous Browser",
-  description: "Reduce HN fomo by using AI to surface the best content",
+  title: "Yello Solar Hub",
+  description: "One Stop Solar Shop - Marketplace completo de equipamentos solares",
 };
 
 export default function RootLayout(props: { children: React.ReactNode }) {
@@ -18,7 +20,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SidebarProvider defaultOpen={true}>
+            <AppSidebar />
+            <SidebarInset>
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
