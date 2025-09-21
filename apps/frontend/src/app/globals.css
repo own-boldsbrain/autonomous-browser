@@ -2,107 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+/* ---- YSH + Geist Design System ---- */
+:root {
+  /* Geist — tipografia via geist/font em layout.tsx */
+  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui);
+  --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular);
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+  /* Geist neutrals */
+  --geist-bg: #ffffff;
+  --geist-bg-soft: #fafafa;
+  --geist-elev: #ffffff;
+  --geist-border: #eaeaea;
+  --geist-fg: #111111;
+  --geist-fg-muted: #666666;
+  --geist-fg-subtle: #888888;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+  /* YSH palette (extraída do logo) */
+  --ysh-pink:  #FA2348;
+  --ysh-orange:#F95120;
+  --ysh-amber: #FB8304;
+  --ysh-gold:  #FAB013;
+  --ysh-cream: #F9DFCA;
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+  /* Gradients */
+  --ysh-linear: linear-gradient(135deg,
+      var(--ysh-pink) 0%,
+      var(--ysh-orange) 30%,
+      var(--ysh-amber) 60%,
+      var(--ysh-gold) 85%,
+      var(--ysh-cream) 100%);
+  --ysh-conic: conic-gradient(from 90deg,
+      var(--ysh-pink), var(--ysh-orange), var(--ysh-amber), var(--ysh-gold), var(--ysh-pink));
+  --ysh-radial: radial-gradient(circle at 30% 50%,
+      var(--ysh-gold) 0%, var(--ysh-amber) 35%, var(--ysh-orange) 65%, var(--ysh-pink) 100%);
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+  /* Shadows alinhadas ao Geist */
+  --geist-shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --geist-shadow-md: 0 6px 24px rgba(0,0,0,.06);
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+  /* shadcn/ui compatibility tokens (mapped to Geist) */
+  --background: 0 0% 100%;
+  --foreground: 210 40% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 40% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 40% 8%;
+  --primary: 210 40% 8%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 210 40% 8%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 210 40% 8%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 210 40% 8%;
+  --radius: 0.5rem;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+  /* Sidebar tokens */
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+:root[data-theme="dark"] {
+  --geist-bg: #000000;
+  --geist-bg-soft: #0a0a0a;
+  --geist-elev: #111111;
+  --geist-border: #222222;
+  --geist-fg: #fafafa;
+  --geist-fg-muted: #9a9a9a;
+  --geist-fg-subtle: #7a7a7a;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+  /* shadcn/ui dark mode compatibility */
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+  --popover: 224 71% 4%;
+  --popover-foreground: 213 31% 91%;
+  --primary: 213 31% 91%;
+  --primary-foreground: 224 71% 4%;
+  --secondary: 215 27.9% 16.9%;
+  --secondary-foreground: 213 31% 91%;
+  --muted: 215 27.9% 16.9%;
+  --muted-foreground: 217.9 10.6% 64.9%;
+  --accent: 215 27.9% 16.9%;
+  --accent-foreground: 213 31% 91%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 213 31% 91%;
+  --border: 215 27.9% 16.9%;
+  --input: 215 27.9% 16.9%;
+  --ring: 216 34% 17%;
 
-    --radius: 0.5rem;
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
 
-    --chart-1: 12 76% 61%;
+/* ---- Utilities de stroke/borda gradiente ---- */
 
-    --chart-2: 173 58% 39%;
+/* 1) Borda gradiente real (sem "dupla camada"), com máscara */
+.ysh-gradient-border {
+  position: relative;
+  border-radius: inherit;
+}
+.ysh-gradient-border::before {
+  content: "";
+  position: absolute; inset: 0;
+  padding: 1px;                      /* espessura da borda */
+  border-radius: inherit;
+  background: var(--ysh-linear);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;    /* Firefox */
+  pointer-events: none;
+}
 
-    --chart-3: 197 37% 24%;
+/* 2) Outline "stroke" no hover/foco */
+.ysh-outline:hover, .ysh-outline:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  background:
+    linear-gradient(var(--geist-bg), var(--geist-bg)) padding-box,
+    var(--ysh-linear) border-box;
+  border: 1px solid transparent;
+  border-radius: .75rem;
+}
 
-    --chart-4: 43 74% 66%;
-
-    --chart-5: 27 87% 67%;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+/* 3) Texto/ícone com stroke gradiente (via background-clip) */
+.ysh-text-gradient {
+  background: var(--ysh-linear);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
 }
 
 @layer base {

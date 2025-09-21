@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ["class", '[data-theme="dark"]'],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -12,7 +12,29 @@ module.exports = {
   prefix: "",
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
+      },
   		colors: {
+        // Geist tokens
+        bg: "var(--geist-bg)",
+        elev: "var(--geist-elev)",
+        border: "var(--geist-border)",
+        fg: "var(--geist-fg)",
+        muted: "var(--geist-fg-muted)",
+        subtle: "var(--geist-fg-subtle)",
+        
+        // YSH colors
+        ysh: {
+          pink: "var(--ysh-pink)",
+          orange: "var(--ysh-orange)",
+          amber: "var(--ysh-amber)",
+          gold: "var(--ysh-gold)",
+          cream: "var(--ysh-cream)",
+        },
+
+        // shadcn/ui compatibility (already defined in CSS)
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
@@ -30,10 +52,6 @@ module.exports = {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
   			accent: {
   				DEFAULT: 'hsl(var(--accent))',
   				foreground: 'hsl(var(--accent-foreground))'
@@ -46,13 +64,6 @@ module.exports = {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
@@ -64,6 +75,15 @@ module.exports = {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+      boxShadow: {
+        geist: "var(--geist-shadow-md)",
+        "geist-sm": "var(--geist-shadow-sm)",
+      },
+      backgroundImage: {
+        "ysh-linear": "var(--ysh-linear)",
+        "ysh-conic": "var(--ysh-conic)",
+        "ysh-radial": "var(--ysh-radial)",
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
