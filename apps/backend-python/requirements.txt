@@ -1,0 +1,8 @@
+fastapi
+pydantic
+uvicorn
+python-dotenv
+pvlib
+requests
+celery
+redis
