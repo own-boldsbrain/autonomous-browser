@@ -62,6 +62,12 @@ export default function Home() {
                 Ver Demo YSH
               </GradientButton>
             </Link>
+            <Link href="/canvas-demo">
+              <GradientButton>
+                <GradientIcon iconName="sparkles" size={16} className="mr-2" />
+                Canvas Kit Demo
+              </GradientButton>
+            </Link>
           </div>
         </section>
 
