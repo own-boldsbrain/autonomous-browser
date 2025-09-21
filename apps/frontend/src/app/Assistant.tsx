@@ -29,7 +29,13 @@ export function Assistant() {
   const [level, setLevel] = useState(0);
   const [isChatVisible, setIsChatVisible] = useState(true);
   const [ucId, setUcId] = useState<string>("");
-  const [homologationResults, setHomologationResults] = useState<HomologationResult[]>([]);
+    const [homologationResults, setHomologationResults] = useState<HomologationResult[]>([]);
+  const [loadingStates, setLoadingStates] = useState({
+    createUC: false,
+    validateAddress: false,
+    analyzeConsumption: false,
+    generateProdist: false,
+  });
 
   useEffect(() => {
     if (assistantWorkflow) {
@@ -71,8 +77,8 @@ export function Assistant() {
   }, [assistantWorkflow]);
 
   return (
-    <div className="p-4 flex flex-col space-y-2 h-screen overflow-hidden">
-      <div className="flex items-center justify-between gap-2">
+    <div className="p-4 flex flex-col space-y-2 h-screen overflow-hidden" role="main" aria-label="Painel de Controle do Assistente IA">
+      <div className="flex items-center justify-between gap-2" role="toolbar" aria-label="Controles de nível do assistente">
         <div className="flex items-center justify-between gap-2">
           <Button
             size="sm"
@@ -81,9 +87,15 @@ export function Assistant() {
               setTodos([]);
               setLevel(0);
             }}
+            aria-pressed={level === 0}
+            aria-describedby="level-0-desc"
           >
-            <Zap className="h-4 w-4 mr-2" /> Level 0 - automated
+            <Zap className="h-4 w-4 mr-2" aria-hidden="true" /> Level 0 - automated
           </Button>
+          <div id="level-0-desc" className="sr-only">
+            Modo automatizado: executa tarefas predefinidas sem intervenção
+          </div>
+
           <Button
             size="sm"
             variant={level === 1 ? "default" : "outline"}
@@ -91,23 +103,40 @@ export function Assistant() {
               setTodos([]);
               setLevel(1);
             }}
+            aria-pressed={level === 1}
+            aria-describedby="level-1-desc"
           >
-            <Bot className="h-4 w-4 mr-2" /> Level 1 - agentic
+            <Bot className="h-4 w-4 mr-2" aria-hidden="true" /> Level 1 - agentic
           </Button>
+          <div id="level-1-desc" className="sr-only">
+            Modo agentic: assistente inteligente com tomada de decisões
+          </div>
+
           <Button
             size="sm"
             variant={level === 2 ? "default" : "outline"}
             onClick={() => setLevel(2)}
+            aria-pressed={level === 2}
+            aria-describedby="level-2-desc"
           >
-            <Brain className="h-4 w-4 mr-2" /> Level 2 - autonomous
+            <Brain className="h-4 w-4 mr-2" aria-hidden="true" /> Level 2 - autonomous
           </Button>
+          <div id="level-2-desc" className="sr-only">
+            Modo autônomo: assistente opera independentemente
+          </div>
+
           <Button
             size="sm"
             variant={level === 3 ? "default" : "outline"}
             onClick={() => setLevel(3)}
+            aria-pressed={level === 3}
+            aria-describedby="level-3-desc"
           >
-            <Cpu className="h-4 w-4 mr-2" /> Level 3 - general
+            <Cpu className="h-4 w-4 mr-2" aria-hidden="true" /> Level 3 - general
           </Button>
+          <div id="level-3-desc" className="sr-only">
+            Modo geral: capacidades avançadas de processamento
+          </div>
         </div>
         <div className="flex items-center justify-end gap-2">
           <ThemeToggle />
@@ -166,58 +195,113 @@ export function Assistant() {
           </Button>
         </div>
       </div>
-      <div className="mt-4 p-4 border rounded-lg">
-        <h3 className="text-lg font-semibold mb-2">Homologação Digital YSH 360°</h3>
-        <div className="flex gap-2 flex-wrap">
-          <Button onClick={async () => {
-            try {
-              const result = await createUnidadeConsumidora({
-                codigo_uc: "UC001",
-                classe: "Residencial",
-                subgrupo: "A",
-                modalidade_tarifaria: "Convencional",
-                endereco: { logradouro: "Rua A", numero: "123", cidade: "São Paulo" },
-                responsavel: { nome: "João", email: "joao@email.com" },
-                concessao: { nome: "CEMIG" },
-              });
-              setUcId(result.id);
-              setHomologationResults(prev => [...prev, { action: "Criar UC", result }]);
-            } catch (error) {
-              console.error(error);
-            }
-          }}>Criar UC</Button>
-          <Button onClick={async () => {
-            try {
-              const result = await validateAddress({
-                logradouro: "Rua A",
-                numero: "123",
-                cidade: "São Paulo",
-                estado: "SP",
-                cep: "01234-567"
-              });
-              setHomologationResults(prev => [...prev, { action: "Validar Endereço", result }]);
-            } catch (error) {
-              console.error(error);
-            }
-          }}>Validar Endereço</Button>
-          <Button disabled={!ucId} onClick={async () => {
-            if (!ucId) return;
-            try {
-              const result = await analyzeConsumption(ucId);
-              setHomologationResults(prev => [...prev, { action: "Analisar Consumo", result }]);
-            } catch (error) {
-              console.error(error);
-            }
-          }}>Analisar Consumo</Button>
-          <Button disabled={!ucId} onClick={async () => {
-            if (!ucId) return;
-            try {
-              const result = await generateProdistForm(ucId);
-              setHomologationResults(prev => [...prev, { action: "Gerar PRODIST", result }]);
-            } catch (error) {
-              console.error(error);
-            }
-          }}>Gerar PRODIST</Button>
+      <div className="mt-4 p-4 border rounded-lg" role="region" aria-labelledby="homologation-heading">
+        <h3 id="homologation-heading" className="text-lg font-semibold mb-2">Homologação Digital YSH 360°</h3>
+        <div className="flex gap-2 flex-wrap" role="toolbar" aria-label="Ações de homologação">
+          <Button
+            onClick={async () => {
+              setLoadingStates(prev => ({ ...prev, createUC: true }));
+              try {
+                const result = await createUnidadeConsumidora({
+                  codigo_uc: "UC001",
+                  classe: "Residencial",
+                  subgrupo: "A",
+                  modalidade_tarifaria: "Convencional",
+                  endereco: { logradouro: "Rua A", numero: "123", cidade: "São Paulo" },
+                  responsavel: { nome: "João", email: "joao@email.com" },
+                  concessao: { nome: "CEMIG" },
+                });
+                setUcId(result.id);
+                setHomologationResults(prev => [...prev, { action: "Criar UC", result }]);
+              } catch (error) {
+                console.error(error);
+                setHomologationResults(prev => [...prev, { action: "Erro ao criar UC", result: error }]);
+              } finally {
+                setLoadingStates(prev => ({ ...prev, createUC: false }));
+              }
+            }}
+            disabled={loadingStates.createUC}
+            aria-describedby="create-uc-desc"
+          >
+            {loadingStates.createUC ? "Criando..." : "Criar UC"}
+          </Button>
+          <div id="create-uc-desc" className="sr-only">
+            Criar nova Unidade Consumidora no sistema de homologação
+          </div>
+
+          <Button
+            onClick={async () => {
+              setLoadingStates(prev => ({ ...prev, validateAddress: true }));
+              try {
+                const result = await validateAddress({
+                  logradouro: "Rua A",
+                  numero: "123",
+                  cidade: "São Paulo",
+                  estado: "SP",
+                  cep: "01234-567"
+                });
+                setHomologationResults(prev => [...prev, { action: "Validar Endereço", result }]);
+              } catch (error) {
+                console.error(error);
+                setHomologationResults(prev => [...prev, { action: "Erro na validação", result: error }]);
+              } finally {
+                setLoadingStates(prev => ({ ...prev, validateAddress: false }));
+              }
+            }}
+            disabled={loadingStates.validateAddress}
+            aria-describedby="validate-address-desc"
+          >
+            {loadingStates.validateAddress ? "Validando..." : "Validar Endereço"}
+          </Button>
+          <div id="validate-address-desc" className="sr-only">
+            Validar endereço para homologação PRODIST
+          </div>
+
+          <Button
+            disabled={!ucId || loadingStates.analyzeConsumption}
+            onClick={async () => {
+              if (!ucId) return;
+              setLoadingStates(prev => ({ ...prev, analyzeConsumption: true }));
+              try {
+                const result = await analyzeConsumption(ucId);
+                setHomologationResults(prev => [...prev, { action: "Analisar Consumo", result }]);
+              } catch (error) {
+                console.error(error);
+                setHomologationResults(prev => [...prev, { action: "Erro na análise", result: error }]);
+              } finally {
+                setLoadingStates(prev => ({ ...prev, analyzeConsumption: false }));
+              }
+            }}
+            aria-describedby="analyze-consumption-desc"
+          >
+            {loadingStates.analyzeConsumption ? "Analisando..." : "Analisar Consumo"}
+          </Button>
+          <div id="analyze-consumption-desc" className="sr-only">
+            Analisar padrão de consumo da unidade consumidora
+          </div>
+
+          <Button
+            disabled={!ucId || loadingStates.generateProdist}
+            onClick={async () => {
+              if (!ucId) return;
+              setLoadingStates(prev => ({ ...prev, generateProdist: true }));
+              try {
+                const result = await generateProdistForm(ucId);
+                setHomologationResults(prev => [...prev, { action: "Gerar PRODIST", result }]);
+              } catch (error) {
+                console.error(error);
+                setHomologationResults(prev => [...prev, { action: "Erro na geração", result: error }]);
+              } finally {
+                setLoadingStates(prev => ({ ...prev, generateProdist: false }));
+              }
+            }}
+            aria-describedby="generate-prodist-desc"
+          >
+            {loadingStates.generateProdist ? "Gerando..." : "Gerar PRODIST"}
+          </Button>
+          <div id="generate-prodist-desc" className="sr-only">
+            Gerar formulário PRODIST para homologação
+          </div>
         </div>
         {homologationResults.length > 0 && (
           <div className="mt-4">

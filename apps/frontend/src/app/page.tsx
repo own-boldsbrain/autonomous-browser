@@ -24,9 +24,7 @@ export default function Home() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Yello Solar Hub
-                </BreadcrumbLink>
+                <BreadcrumbLink href="#">Yello Solar Hub</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
@@ -38,41 +36,68 @@ export default function Home() {
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         {/* Welcome Section */}
-        <div className="text-center space-y-4 py-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
+        <section
+          className="text-center space-y-4 py-8"
+          aria-labelledby="welcome-heading"
+        >
+          <h1
+            id="welcome-heading"
+            className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
+          >
             Yello Solar Hub 360°
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            One Stop Solar Shop - Marketplace completo de equipamentos solares certificados
-            com assistente IA para consultoria técnica e homologação PRODIST
+            One Stop Solar Shop - Marketplace completo de equipamentos solares
+            certificados com assistente IA para consultoria técnica e
+            homologação PRODIST
           </p>
-        </div>
+        </section>
 
         {/* Quick Access Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="hover:shadow-lg transition-shadow">
+        <section
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+          aria-labelledby="quick-access-heading"
+        >
+          <h2 id="quick-access-heading" className="sr-only">
+            Acesso Rápido aos Serviços
+          </h2>
+          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5 text-blue-500" />
+                <ShoppingCart
+                  className="h-5 w-5 text-blue-500"
+                  aria-hidden="true"
+                />
                 Marketplace
               </CardTitle>
               <CardDescription>
-                Explore nosso catálogo completo de equipamentos solares certificados
+                Explore nosso catálogo completo de equipamentos solares
+                certificados
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href="/marketplace">
-                <Button className="w-full">
+              <Link
+                href="/marketplace"
+                aria-label="Acessar marketplace de equipamentos solares"
+              >
+                <Button className="w-full" aria-describedby="marketplace-desc">
                   Explorar Equipamentos
                 </Button>
               </Link>
+              <div id="marketplace-desc" className="sr-only">
+                Navegue pelo catálogo completo de equipamentos solares
+                certificados INMETRO
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-green-500" />
+                <MessageSquare
+                  className="h-5 w-5 text-green-500"
+                  aria-hidden="true"
+                />
                 Assistente IA
               </CardTitle>
               <CardDescription>
@@ -80,18 +105,32 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href="/chat">
-                <Button className="w-full" variant="outline">
+              <Link
+                href="/chat"
+                aria-label="Conversar com assistente de IA especializado em energia solar"
+              >
+                <Button
+                  className="w-full"
+                  variant="outline"
+                  aria-describedby="ai-desc"
+                >
                   Conversar com IA
                 </Button>
               </Link>
+              <div id="ai-desc" className="sr-only">
+                Obtenha consultoria técnica especializada em energia solar com
+                assistente IA
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow">
+          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5 text-purple-500" />
+                <Settings
+                  className="h-5 w-5 text-purple-500"
+                  aria-hidden="true"
+                />
                 Homologação
               </CardTitle>
               <CardDescription>
@@ -99,15 +138,30 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline" disabled>
+              <Button
+                className="w-full"
+                variant="outline"
+                disabled
+                aria-describedby="homologacao-desc"
+              >
                 Em Desenvolvimento
               </Button>
+              <div id="homologacao-desc" className="sr-only">
+                Sistema de homologação PRODIST e Portaria 140 - atualmente em
+                desenvolvimento
+              </div>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <section
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          aria-labelledby="features-heading"
+        >
+          <h2 id="features-heading" className="sr-only">
+            Recursos e Serviços
+          </h2>
           <Card>
             <CardContent className="p-6 text-center">
               <Sun className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
@@ -147,7 +201,7 @@ export default function Home() {
               </p>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* Assistant Section */}
         <Assistant />
