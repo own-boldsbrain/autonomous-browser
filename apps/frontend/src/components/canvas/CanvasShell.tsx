@@ -9,19 +9,33 @@ type Props = PropsWithChildren<{
   title?: string;
   onBack?: () => void;
   onOpenVersions?: () => void;
-  left?: React.ReactNode;   // Toolbar vertical
-  right?: React.ReactNode;  // Painel lateral (opcional)
+  left?: React.ReactNode; // Toolbar vertical
+  right?: React.ReactNode; // Painel lateral (opcional)
 }>;
 
-export function CanvasShell({ title, onBack, onOpenVersions, left, right, children }: Props) {
+export function CanvasShell({
+  title,
+  onBack,
+  onOpenVersions,
+  left,
+  right,
+  children,
+}: Props) {
   return (
     <div className="grid grid-cols-[56px_1fr_320px] grid-rows-[56px_1fr] h-dvh">
       {/* Topbar */}
       <header className="col-span-3 border-b flex items-center gap-2 px-3">
-        <Button variant="ghost" size="icon" onClick={onBack} aria-label="Voltar">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onBack}
+          aria-label="Voltar"
+        >
           <ArrowLeft className="size-5" />
         </Button>
-        <h1 className="text-sm font-medium grow truncate">{title ?? "Canvas"}</h1>
+        <h1 className="text-sm font-medium grow truncate">
+          {title ?? "Canvas"}
+        </h1>
         <Button variant="ghost" size="sm" onClick={onOpenVersions}>
           <History className="size-4 mr-2" /> Versões
         </Button>
