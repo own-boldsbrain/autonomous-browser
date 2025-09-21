@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { GradientButton } from "@/components/ysh/gradient-button"
 import { GradientBadge } from "@/components/ysh/gradient-badge"
 import { GradientIcon } from "@/components/ysh/gradient-icon"
-import { ShoppingCart, MessageSquare, Sun, Zap, Battery, Settings, Sparkles } from "lucide-react"
+import { ShoppingCart, MessageSquare, Sun, Zap, Battery, Settings } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
@@ -58,7 +58,7 @@ export default function Home() {
             <GradientBadge>Novo Design System</GradientBadge>
             <Link href="/ysh-demo">
               <GradientButton glow>
-                <GradientIcon Icon={Sparkles} size={16} className="mr-2" />
+                <GradientIcon iconName="sparkles" size={16} className="mr-2" />
                 Ver Demo YSH
               </GradientButton>
             </Link>

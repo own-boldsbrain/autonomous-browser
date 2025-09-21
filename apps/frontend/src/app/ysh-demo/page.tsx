@@ -4,7 +4,7 @@ import { GradientButton } from "@/components/ysh/gradient-button";
 import { GradientCard } from "@/components/ysh/gradient-card";
 import { GradientBadge } from "@/components/ysh/gradient-badge";
 import { GradientIcon } from "@/components/ysh/gradient-icon";
-import { Rocket, Zap, Sun, Battery, Cpu, Sparkles } from "lucide-react";
+
 
 export default function YSHDemoPage() {
   return (
@@ -51,12 +51,12 @@ export default function YSHDemoPage() {
                 Ícones Lucide com gradiente YSH aplicado.
               </p>
               <div className="flex flex-wrap gap-4 items-center">
-                <GradientIcon Icon={Rocket} size={32} />
-                <GradientIcon Icon={Zap} size={28} />
-                <GradientIcon Icon={Sun} size={36} />
-                <GradientIcon Icon={Battery} size={30} />
-                <GradientIcon Icon={Cpu} size={32} />
-                <GradientIcon Icon={Sparkles} size={28} />
+                <GradientIcon iconName="rocket" size={32} />
+                <GradientIcon iconName="zap" size={28} />
+                <GradientIcon iconName="sun" size={36} />
+                <GradientIcon iconName="battery" size={30} />
+                <GradientIcon iconName="sparkles" size={32} />
+                <GradientIcon iconName="sparkles" size={28} />
               </div>
             </div>
           </GradientCard>
@@ -131,7 +131,7 @@ export default function YSHDemoPage() {
                     Hover Effect
                   </GradientButton>
                   <div className="text-center">
-                    <GradientIcon Icon={Sparkles} size={24} />
+                    <GradientIcon iconName="sparkles" size={24} />
                     <span className="ml-2 text-sm ysh-text-gradient font-medium">
                       Animado
                     </span>
