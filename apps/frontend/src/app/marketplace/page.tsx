@@ -246,9 +246,9 @@ export default function MarketplacePage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <main className="container mx-auto p-6 space-y-6">
       {/* Header */}
-      <div className="text-center space-y-4">
+      <header className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
           Yello Solar Hub Marketplace
         </h1>
@@ -256,138 +256,169 @@ export default function MarketplacePage() {
           One Stop Solar Shop - Equipamentos certificados para sua instalação
           fotovoltaica
         </p>
-      </div>
+      </header>
 
       {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Filtros de Busca
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Buscar</label>
-              <Input
-                placeholder="Modelo, fabricante ou família..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Categoria</label>
-              <Select
-                value={selectedCategory}
-                onValueChange={setSelectedCategory}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Todas as categorias" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as categorias</SelectItem>
-                  {uniqueCategories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {getCategoryLabel(category)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Fabricante</label>
-              <Select
-                value={selectedFabricante}
-                onValueChange={setSelectedFabricante}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Todos os fabricantes" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os fabricantes</SelectItem>
-                  {uniqueFabricantes.map((fabricante) => (
-                    <SelectItem key={fabricante} value={fabricante}>
-                      {fabricante}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-end">
-              <Button
-                variant="outline"
-                onClick={() => setChatOpen(true)}
-                className="w-full"
-              >
-                <Star className="h-4 w-4 mr-2" />
-                Consultar IA
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Results */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEquipamentos.map((equip, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge variant="secondary" className="flex items-center gap-1">
-                  {getCategoryIcon(equip.categoria)}
-                  {getCategoryLabel(equip.categoria)}
-                </Badge>
-                <Button size="sm" variant="ghost">
-                  <ShoppingCart className="h-4 w-4" />
-                </Button>
-              </div>
-              <CardTitle className="text-lg">{equip.modelo}</CardTitle>
-              <CardDescription>
-                {equip.fabricante} {equip.familia && `- ${equip.familia}`}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+      <section aria-labelledby="filters-heading">
+        <Card>
+          <CardHeader>
+            <CardTitle id="filters-heading" className="flex items-center gap-2">
+              <Search className="h-5 w-5" aria-hidden="true" />
+              Filtros de Busca
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="space-y-2">
-                {equip.datasheet && (
-                  <div className="text-sm text-muted-foreground">
-                    {equip.datasheet.potencia_nominal_wp && (
-                      <p>Potência: {equip.datasheet.potencia_nominal_wp}W</p>
-                    )}
-                    {equip.datasheet.potencia_nominal_ac_kw && (
-                      <p>
-                        Potência AC: {equip.datasheet.potencia_nominal_ac_kw}kW
-                      </p>
-                    )}
-                    {equip.datasheet.eficiencia_pct && (
-                      <p>Eficiência: {equip.datasheet.eficiencia_pct}%</p>
-                    )}
-                    {equip.datasheet.rendimento_max_pct && (
-                      <p>Rendimento: {equip.datasheet.rendimento_max_pct}%</p>
-                    )}
-                  </div>
-                )}
-                <div className="flex gap-2 pt-2">
-                  <Button size="sm" className="flex-1">
-                    Ver Detalhes
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    Comparar
-                  </Button>
+                <label htmlFor="search-input" className="text-sm font-medium">Buscar</label>
+                <Input
+                  id="search-input"
+                  placeholder="Modelo, fabricante ou família..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  aria-describedby="search-help"
+                />
+                <div id="search-help" className="sr-only">
+                  Busque por modelo, fabricante ou família do equipamento
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              <div className="space-y-2">
+                <label htmlFor="category-select" className="text-sm font-medium">Categoria</label>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
+                  <SelectTrigger id="category-select" aria-describedby="category-help">
+                    <SelectValue placeholder="Todas as categorias" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as categorias</SelectItem>
+                    {uniqueCategories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {getCategoryLabel(category)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div id="category-help" className="sr-only">
+                  Filtrar equipamentos por categoria
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="fabricante-select" className="text-sm font-medium">Fabricante</label>
+                <Select
+                  value={selectedFabricante}
+                  onValueChange={setSelectedFabricante}
+                >
+                  <SelectTrigger id="fabricante-select" aria-describedby="fabricante-help">
+                    <SelectValue placeholder="Todos os fabricantes" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os fabricantes</SelectItem>
+                    {uniqueFabricantes.map((fabricante) => (
+                      <SelectItem key={fabricante} value={fabricante}>
+                        {fabricante}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <div id="fabricante-help" className="sr-only">
+                  Filtrar equipamentos por fabricante
+                </div>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => setChatOpen(true)}
+                  className="w-full"
+                  aria-describedby="ai-chat-help"
+                >
+                  <Star className="h-4 w-4 mr-2" aria-hidden="true" />
+                  Consultar IA
+                </Button>
+                <div id="ai-chat-help" className="sr-only">
+                  Abrir assistente de IA para consultar sobre equipamentos solares
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
 
-      {filteredEquipamentos.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-lg">
-            Nenhum equipamento encontrado com os filtros aplicados.
-          </p>
-        </div>
-      )}
+      {/* Results */}
+      <section aria-labelledby="results-heading">
+        <h2 id="results-heading" className="sr-only">Resultados da Busca</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Equipamentos encontrados">
+          {filteredEquipamentos.map((equip, index) => (
+            <Card key={index} className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary" role="gridcell">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <Badge variant="secondary" className="flex items-center gap-1" aria-label={`Categoria: ${getCategoryLabel(equip.categoria)}`}>
+                    {getCategoryIcon(equip.categoria)}
+                    <span aria-hidden="true">{getCategoryLabel(equip.categoria)}</span>
+                  </Badge>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    aria-label={`Adicionar ${equip.modelo} ao carrinho`}
+                    onClick={() => {/* Add to cart logic */}}
+                  >
+                    <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+                  </Button>
+                </div>
+                <CardTitle className="text-lg">{equip.modelo}</CardTitle>
+                <CardDescription>
+                  {equip.fabricante} {equip.familia && `- ${equip.familia}`}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {equip.datasheet && (
+                    <div className="text-sm text-muted-foreground" role="group" aria-label="Especificações técnicas">
+                      {equip.datasheet.potencia_nominal_wp && (
+                        <p>Potência: <span className="font-medium">{equip.datasheet.potencia_nominal_wp}W</span></p>
+                      )}
+                      {equip.datasheet.potencia_nominal_ac_kw && (
+                        <p>
+                          Potência AC: <span className="font-medium">{equip.datasheet.potencia_nominal_ac_kw}kW</span>
+                        </p>
+                      )}
+                      {equip.datasheet.eficiencia_pct && (
+                        <p>Eficiência: <span className="font-medium">{equip.datasheet.eficiencia_pct}%</span></p>
+                      )}
+                      {equip.datasheet.rendimento_max_pct && (
+                        <p>Rendimento: <span className="font-medium">{equip.datasheet.rendimento_max_pct}%</span></p>
+                      )}
+                    </div>
+                  )}
+                  <div className="flex gap-2 pt-2" role="group" aria-label="Ações do equipamento">
+                    <Button size="sm" className="flex-1" aria-describedby={`details-${index}`}>
+                      Ver Detalhes
+                    </Button>
+                    <div id={`details-${index}`} className="sr-only">
+                      Ver detalhes completos do equipamento {equip.modelo}
+                    </div>
+                    <Button size="sm" variant="outline" aria-describedby={`compare-${index}`}>
+                      Comparar
+                    </Button>
+                    <div id={`compare-${index}`} className="sr-only">
+                      Adicionar {equip.modelo} à lista de comparação
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          </div>
+
+        {filteredEquipamentos.length === 0 && (
+          <div className="text-center py-12" role="status" aria-live="polite">
+            <p className="text-muted-foreground text-lg">
+              Nenhum equipamento encontrado com os filtros aplicados.
+            </p>
+          </div>
+        )}
+      </section>
 
       {/* AI Chat Modal */}
       {chatOpen && (
@@ -469,6 +500,6 @@ export default function MarketplacePage() {
           </Card>
         </div>
       )}
-    </div>
+    </main>
   );
 }
