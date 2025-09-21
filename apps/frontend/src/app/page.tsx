@@ -11,7 +11,10 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, MessageSquare, Sun, Zap, Battery, Settings } from "lucide-react"
+import { GradientButton } from "@/components/ysh/gradient-button"
+import { GradientBadge } from "@/components/ysh/gradient-badge"
+import { GradientIcon } from "@/components/ysh/gradient-icon"
+import { ShoppingCart, MessageSquare, Sun, Zap, Battery, Settings, Sparkles } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
@@ -42,15 +45,24 @@ export default function Home() {
         >
           <h1
             id="welcome-heading"
-            className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
+            className="text-4xl font-bold ysh-text-gradient"
           >
             Yello Solar Hub 360°
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-[var(--geist-fg-muted)] max-w-2xl mx-auto">
             One Stop Solar Shop - Marketplace completo de equipamentos solares
             certificados com assistente IA para consultoria técnica e
             homologação PRODIST
           </p>
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <GradientBadge>Novo Design System</GradientBadge>
+            <Link href="/ysh-demo">
+              <GradientButton glow>
+                <GradientIcon Icon={Sparkles} size={16} className="mr-2" />
+                Ver Demo YSH
+              </GradientButton>
+            </Link>
+          </div>
         </section>
 
         {/* Quick Access Cards */}

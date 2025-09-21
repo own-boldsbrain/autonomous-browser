@@ -91,7 +91,7 @@ export default function YSHDemoPage() {
                   Texto padrão com Geist Sans.
                 </p>
                 <code className="font-mono text-sm bg-[var(--geist-bg-soft)] px-2 py-1 rounded">
-                  GeistMono("code-example")
+                  GeistMono(&quot;code-example&quot;)
                 </code>
               </div>
             </div>

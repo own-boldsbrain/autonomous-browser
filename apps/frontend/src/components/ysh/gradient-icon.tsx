@@ -13,10 +13,5 @@ export function GradientIcon({
   size?: number;
   className?: string;
 }) {
-  return (
-    <Icon 
-      size={size} 
-      className={cn("ysh-text-gradient", className)}
-    />
-  );
+  return <Icon size={size} className={cn("ysh-text-gradient", className)} />;
 }
