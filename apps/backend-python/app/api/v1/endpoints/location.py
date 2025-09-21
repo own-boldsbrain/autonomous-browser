@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from app.schemas.location import AddressInput, LocationOutput
 from app.services.location_service import get_location_from_address
 
