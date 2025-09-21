@@ -87,9 +87,9 @@ const data = {
       icon: ShoppingCart,
     },
     {
-      name: "Consultoria IA",
+      name: "Solar Copilot",
       url: "/chat",
-      icon: MessageSquare,
+      icon: "/helio.png",
     },
   ],
 }
