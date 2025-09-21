@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { User, Zap, Sun, Battery, Settings, Send } from "lucide-react";
-import { HelioIcon } from "@/components/helio-icon";
+import { Bot, User, Zap, Sun, Battery, Settings, Send } from "lucide-react";
 
 interface ChatMessage {
   id: string;
@@ -21,7 +20,7 @@ export default function ChatPage() {
       id: "1",
       role: "assistant",
       content:
-        "E aí, meu chapa! Aqui é o Hélio da Yello Solar Hub. Bora gerar luz e guardar grana? Me fala o que você tá buscando e a gente resolve sem enrolação.",
+        "Olá! Sou o assistente especializado da Yello Solar Hub. Como posso ajudar você hoje com seu projeto de energia solar?",
       timestamp: new Date(),
     },
   ]);
@@ -66,25 +65,25 @@ export default function ChatPage() {
     const lowerMessage = userMessage.toLowerCase();
 
     if (lowerMessage.includes("painel") || lowerMessage.includes("módulo")) {
-      return "Só os top aqui, meu chapa! Painéis com mais de 20% de eficiência e 25 anos de garantia na fita. BYD, Canadian Solar, JinkoSolar... é qualidade que não acaba. Partiu economia! Qual potência você tá mirando?";
+      return "Para painéis solares, recomendamos módulos com eficiência acima de 20% e garantia de 25 anos. Temos opções da BYD, Canadian Solar e JinkoSolar. Que potência você precisa?";
     }
 
     if (lowerMessage.includes("inversor")) {
-      return "Temos inversores on-grid e híbridos, tudo certificado INMETRO. Os híbridos são o bicho pra quem quer bateria junto. Sem enrolação: qual a potência do seu sistema pra eu já te indicar o ideal?";
+      return "Temos inversores on-grid e híbridos certificados INMETRO. Os híbridos são ideais para sistemas com bateria. Qual a potência do seu sistema?";
     }
 
     if (lowerMessage.includes("bateria")) {
-      return "Baterias LFP na veia! 10 anos de garantia, capacidades de 5kWh a 15kWh, tudo compatível com inversor híbrido. Não vai moscar, essas baterias são top pra armazenar sua energia.";
+      return "Oferecemos baterias LFP (Lithium Ferro Fosfato) com 10 anos de garantia. Capacidades de 5kWh a 15kWh. Compatíveis com inversores híbridos.";
     }
 
     if (
       lowerMessage.includes("homologação") ||
       lowerMessage.includes("prodist")
     ) {
-      return "Relaxa que a burocracia é comigo mesmo! Cuidamos de toda homologação PRODIST e Portaria 140/2022, com todos os laudos técnicos, ART e documentação no capricho. Você só espera a aprovação e energia na conta.";
+      return "Cuidamos de toda a homologação PRODIST e Portaria 140/2022. Incluímos laudos técnicos, ART e documentação completa no projeto.";
     }
 
-    return "Firmeza! Entendi sua dúvida sobre energia solar. Posso desenrolar qualquer parada: dimensionamento, equipamentos top, homologação... é só dizer que a gente resolve. O que você quer saber primeiro?";
+    return "Entendi sua pergunta sobre energia solar. Posso ajudar com dimensionamento, seleção de equipamentos, homologação ou qualquer aspecto do seu projeto fotovoltaico. O que você gostaria de saber?";
   };
 
   const quickActions = [
@@ -115,10 +114,11 @@ export default function ChatPage() {
       {/* Header */}
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-2">
-          Hélio - Seu Consultor Solar
+          Assistente Solar IA
         </h1>
         <p className="text-muted-foreground">
-          Direto ao ponto, sem enrolação! Tire suas dúvidas e bora gerar luz.
+          Tire suas dúvidas sobre energia solar e receba recomendações
+          personalizadas
         </p>
       </div>
 
@@ -126,7 +126,7 @@ export default function ChatPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <HelioIcon className="h-5 w-5 text-yellow-500" />
+            <Bot className="h-5 w-5" />
             Ações Rápidas
           </CardTitle>
         </CardHeader>
@@ -163,7 +163,7 @@ export default function ChatPage() {
                 {message.role === "assistant" && (
                   <div className="flex-shrink-0">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-                      <HelioIcon className="h-5 w-5 text-white" />
+                      <Bot className="h-4 w-4 text-white" />
                     </div>
                   </div>
                 )}
@@ -202,7 +202,7 @@ export default function ChatPage() {
               <div className="flex gap-3 justify-start">
                 <div className="flex-shrink-0">
                   <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-                    <HelioIcon className="h-5 w-5 text-white" />
+                    <Bot className="h-4 w-4 text-white" />
                   </div>
                 </div>
                 <div className="bg-muted p-3 rounded-lg">
