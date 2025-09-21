@@ -61,7 +61,7 @@ export default function Home() {
           <h2 id="quick-access-heading" className="sr-only">
             Acesso Rápido aos Serviços
           </h2>
-          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ShoppingCart
@@ -91,7 +91,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare
@@ -124,7 +124,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-primary">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings
@@ -162,9 +162,9 @@ export default function Home() {
           <h2 id="features-heading" className="sr-only">
             Recursos e Serviços
           </h2>
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
             <CardContent className="p-6 text-center">
-              <Sun className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
+              <Sun className="h-12 w-12 mx-auto mb-4 text-yellow-500 transition-transform duration-300 hover:scale-110" />
               <h3 className="font-semibold mb-2">Equipamentos Premium</h3>
               <p className="text-sm text-muted-foreground">
                 Módulos, inversores e baterias certificados INMETRO
@@ -172,9 +172,9 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
             <CardContent className="p-6 text-center">
-              <Zap className="h-12 w-12 mx-auto mb-4 text-blue-500" />
+              <Zap className="h-12 w-12 mx-auto mb-4 text-blue-500 transition-transform duration-300 hover:scale-110" />
               <h3 className="font-semibold mb-2">Consultoria Técnica</h3>
               <p className="text-sm text-muted-foreground">
                 Dimensionamento e projeto personalizado
@@ -182,9 +182,9 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
             <CardContent className="p-6 text-center">
-              <Battery className="h-12 w-12 mx-auto mb-4 text-green-500" />
+              <Battery className="h-12 w-12 mx-auto mb-4 text-green-500 transition-transform duration-300 hover:scale-110" />
               <h3 className="font-semibold mb-2">Sistemas Completos</h3>
               <p className="text-sm text-muted-foreground">
                 Soluções on-grid, off-grid e híbridas
@@ -192,9 +192,9 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-md hover:scale-[1.02]">
             <CardContent className="p-6 text-center">
-              <Settings className="h-12 w-12 mx-auto mb-4 text-orange-500" />
+              <Settings className="h-12 w-12 mx-auto mb-4 text-orange-500 transition-transform duration-300 hover:scale-110" />
               <h3 className="font-semibold mb-2">Homologação 360°</h3>
               <p className="text-sm text-muted-foreground">
                 PRODIST, ANEEL e documentação completa

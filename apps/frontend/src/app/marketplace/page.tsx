@@ -30,6 +30,7 @@ import {
   Bot,
   User,
 } from "lucide-react";
+import { MarketplaceSkeleton } from "@/components/skeletons";
 
 interface Equipamento {
   categoria: string;
@@ -239,9 +240,55 @@ export default function MarketplacePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
+      <main className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <header className="text-center space-y-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
+            Yello Solar Hub Marketplace
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            One Stop Solar Shop - Equipamentos certificados para sua instalação
+            fotovoltaica
+          </p>
+        </header>
+
+        {/* Filters Skeleton */}
+        <section aria-labelledby="filters-heading">
+          <Card>
+            <CardHeader>
+              <CardTitle id="filters-heading" className="flex items-center gap-2">
+                <Search className="h-5 w-5" aria-hidden="true" />
+                Filtros de Busca
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="space-y-2">
+                  <div className="h-4 w-16 bg-muted rounded animate-pulse" />
+                  <div className="h-10 w-full bg-muted rounded animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-16 bg-muted rounded animate-pulse" />
+                  <div className="h-10 w-full bg-muted rounded animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-16 bg-muted rounded animate-pulse" />
+                  <div className="h-10 w-full bg-muted rounded animate-pulse" />
+                </div>
+                <div className="flex items-end">
+                  <div className="h-10 w-full bg-muted rounded animate-pulse" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Results Skeleton */}
+        <section aria-labelledby="results-heading">
+          <h2 id="results-heading" className="sr-only">Resultados da Busca</h2>
+          <MarketplaceSkeleton />
+        </section>
+      </main>
     );
   }
 
@@ -270,7 +317,9 @@ export default function MarketplacePage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="space-y-2">
-                <label htmlFor="search-input" className="text-sm font-medium">Buscar</label>
+                <label htmlFor="search-input" className="text-sm font-medium">
+                  Buscar
+                </label>
                 <Input
                   id="search-input"
                   placeholder="Modelo, fabricante ou família..."
@@ -283,12 +332,20 @@ export default function MarketplacePage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="category-select" className="text-sm font-medium">Categoria</label>
+                <label
+                  htmlFor="category-select"
+                  className="text-sm font-medium"
+                >
+                  Categoria
+                </label>
                 <Select
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger id="category-select" aria-describedby="category-help">
+                  <SelectTrigger
+                    id="category-select"
+                    aria-describedby="category-help"
+                  >
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
                   <SelectContent>
@@ -305,12 +362,20 @@ export default function MarketplacePage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="fabricante-select" className="text-sm font-medium">Fabricante</label>
+                <label
+                  htmlFor="fabricante-select"
+                  className="text-sm font-medium"
+                >
+                  Fabricante
+                </label>
                 <Select
                   value={selectedFabricante}
                   onValueChange={setSelectedFabricante}
                 >
-                  <SelectTrigger id="fabricante-select" aria-describedby="fabricante-help">
+                  <SelectTrigger
+                    id="fabricante-select"
+                    aria-describedby="fabricante-help"
+                  >
                     <SelectValue placeholder="Todos os fabricantes" />
                   </SelectTrigger>
                   <SelectContent>
@@ -337,7 +402,8 @@ export default function MarketplacePage() {
                   Consultar IA
                 </Button>
                 <div id="ai-chat-help" className="sr-only">
-                  Abrir assistente de IA para consultar sobre equipamentos solares
+                  Abrir assistente de IA para consultar sobre equipamentos
+                  solares
                 </div>
               </div>
             </div>
@@ -347,21 +413,38 @@ export default function MarketplacePage() {
 
       {/* Results */}
       <section aria-labelledby="results-heading">
-        <h2 id="results-heading" className="sr-only">Resultados da Busca</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Equipamentos encontrados">
+        <h2 id="results-heading" className="sr-only">
+          Resultados da Busca
+        </h2>
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          aria-label="Equipamentos encontrados"
+        >
           {filteredEquipamentos.map((equip, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-primary" role="gridcell">
+            <Card
+              key={index}
+              className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-primary"
+              role="gridcell"
+            >
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <Badge variant="secondary" className="flex items-center gap-1" aria-label={`Categoria: ${getCategoryLabel(equip.categoria)}`}>
+                  <Badge
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                    aria-label={`Categoria: ${getCategoryLabel(equip.categoria)}`}
+                  >
                     {getCategoryIcon(equip.categoria)}
-                    <span aria-hidden="true">{getCategoryLabel(equip.categoria)}</span>
+                    <span aria-hidden="true">
+                      {getCategoryLabel(equip.categoria)}
+                    </span>
                   </Badge>
                   <Button
                     size="sm"
                     variant="ghost"
                     aria-label={`Adicionar ${equip.modelo} ao carrinho`}
-                    onClick={() => {/* Add to cart logic */}}
+                    onClick={() => {
+                      /* Add to cart logic */
+                    }}
                   >
                     <ShoppingCart className="h-4 w-4" aria-hidden="true" />
                   </Button>
@@ -374,31 +457,66 @@ export default function MarketplacePage() {
               <CardContent>
                 <div className="space-y-2">
                   {equip.datasheet && (
-                    <div className="text-sm text-muted-foreground" role="group" aria-label="Especificações técnicas">
+                    <div
+                      className="text-sm text-muted-foreground"
+                      role="group"
+                      aria-label="Especificações técnicas"
+                    >
                       {equip.datasheet.potencia_nominal_wp && (
-                        <p>Potência: <span className="font-medium">{equip.datasheet.potencia_nominal_wp}W</span></p>
+                        <p>
+                          Potência:{" "}
+                          <span className="font-medium">
+                            {equip.datasheet.potencia_nominal_wp}W
+                          </span>
+                        </p>
                       )}
                       {equip.datasheet.potencia_nominal_ac_kw && (
                         <p>
-                          Potência AC: <span className="font-medium">{equip.datasheet.potencia_nominal_ac_kw}kW</span>
+                          Potência AC:{" "}
+                          <span className="font-medium">
+                            {equip.datasheet.potencia_nominal_ac_kw}kW
+                          </span>
                         </p>
                       )}
                       {equip.datasheet.eficiencia_pct && (
-                        <p>Eficiência: <span className="font-medium">{equip.datasheet.eficiencia_pct}%</span></p>
+                        <p>
+                          Eficiência:{" "}
+                          <span className="font-medium">
+                            {equip.datasheet.eficiencia_pct}%
+                          </span>
+                        </p>
                       )}
                       {equip.datasheet.rendimento_max_pct && (
-                        <p>Rendimento: <span className="font-medium">{equip.datasheet.rendimento_max_pct}%</span></p>
+                        <p>
+                          Rendimento:{" "}
+                          <span className="font-medium">
+                            {equip.datasheet.rendimento_max_pct}%
+                          </span>
+                        </p>
                       )}
                     </div>
                   )}
-                  <div className="flex gap-2 pt-2" role="group" aria-label="Ações do equipamento">
-                    <Button size="sm" className="flex-1" aria-describedby={`details-${index}`}>
+                  <div
+                    className="flex gap-2 pt-2"
+                    role="group"
+                    aria-label="Ações do equipamento"
+                  >
+                    <Button
+                      size="sm"
+                      className="flex-1 transition-all duration-200 hover:bg-primary hover:text-primary-foreground"
+                      aria-describedby={`details-${index}`}
+                    >
                       Ver Detalhes
                     </Button>
                     <div id={`details-${index}`} className="sr-only">
                       Ver detalhes completos do equipamento {equip.modelo}
                     </div>
-                    <Button size="sm" variant="outline" aria-describedby={`compare-${index}`}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="transition-all duration-200 hover:bg-secondary"
+                      aria-describedby={`compare-${index}`}
+                    >
                       Comparar
                     </Button>
                     <div id={`compare-${index}`} className="sr-only">
@@ -409,7 +527,7 @@ export default function MarketplacePage() {
               </CardContent>
             </Card>
           ))}
-          </div>
+        </div>
 
         {filteredEquipamentos.length === 0 && (
           <div className="text-center py-12" role="status" aria-live="polite">
@@ -431,7 +549,10 @@ export default function MarketplacePage() {
         >
           <Card className="w-full max-w-2xl h-3/4 flex flex-col">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle id="chat-modal-title" className="flex items-center gap-2">
+              <CardTitle
+                id="chat-modal-title"
+                className="flex items-center gap-2"
+              >
                 <Bot className="h-5 w-5" aria-hidden="true" />
                 Assistente Solar IA
               </CardTitle>
@@ -478,7 +599,10 @@ export default function MarketplacePage() {
                       }`}
                     >
                       <p className="text-sm">{message.content}</p>
-                      <time className="text-xs opacity-70 mt-1 block" dateTime={message.timestamp.toISOString()}>
+                      <time
+                        className="text-xs opacity-70 mt-1 block"
+                        dateTime={message.timestamp.toISOString()}
+                      >
                         {message.timestamp.toLocaleTimeString()}
                       </time>
                     </div>
@@ -490,7 +614,11 @@ export default function MarketplacePage() {
                   </div>
                 ))}
                 {isTyping && (
-                  <div className="flex gap-3 justify-start" role="status" aria-label="Assistente está digitando">
+                  <div
+                    className="flex gap-3 justify-start"
+                    role="status"
+                    aria-label="Assistente está digitando"
+                  >
                     <div className="flex-shrink-0" aria-hidden="true">
                       <Bot className="h-8 w-8 text-primary" />
                     </div>
@@ -506,7 +634,11 @@ export default function MarketplacePage() {
               </div>
 
               {/* Chat Input */}
-              <div className="flex gap-2" role="form" aria-label="Enviar mensagem para assistente">
+              <div
+                className="flex gap-2"
+                role="form"
+                aria-label="Enviar mensagem para assistente"
+              >
                 <Input
                   placeholder="Digite sua pergunta sobre energia solar..."
                   value={currentMessage}
@@ -517,14 +649,20 @@ export default function MarketplacePage() {
                   autoFocus
                 />
                 <div id="chat-input-help" className="sr-only">
-                  Digite sua pergunta e pressione Enter ou clique no botão enviar
+                  Digite sua pergunta e pressione Enter ou clique no botão
+                  enviar
                 </div>
                 <Button
                   onClick={sendMessage}
                   disabled={!currentMessage.trim() || isTyping}
-                  aria-label="Enviar mensagem"
+                  aria-label={isTyping ? "Enviando mensagem..." : "Enviar mensagem"}
+                  className="transition-all duration-200"
                 >
-                  <Send className="h-4 w-4" aria-hidden="true" />
+                  {isTyping ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                  ) : (
+                    <Send className="h-4 w-4" aria-hidden="true" />
+                  )}
                 </Button>
               </div>
             </CardContent>
