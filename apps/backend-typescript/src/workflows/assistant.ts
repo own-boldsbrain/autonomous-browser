@@ -152,6 +152,26 @@ export async function assistantWorkflow() {
           todos = updatedTodos;
 
           return todos;
+        case "delegateToAgent":
+          const a2aResult = await moderatorStep.a2aDispatch(
+            toolFunction.input as unknown as functions.A2ADispatchInput
+          );
+
+          log.info("delegateToAgent", { a2aResult });
+
+          return a2aResult;
+        case "invokeMcpTool":
+          const mcpResult = await moderatorStep.mcpInvokeTool(
+            toolFunction.input as unknown as functions.MCPInvokeInput
+          );
+
+          log.info("invokeMcpTool", { mcpResult });
+
+          return mcpResult;
+        case "listMcpTools":
+          const availableTools = await moderatorStep.listMcpTools();
+          log.info("listMcpTools", { availableTools });
+          return availableTools;
         default:
           throw new Error(`Unknown function name: ${toolFunction.name}`);
       }

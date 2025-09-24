@@ -10,6 +10,7 @@ import {
 } from "./functions";
 import { client } from "./client";
 import { openaiService } from "@restackio/integrations-openai";
+import { initializeAgentTransport } from "./config/agents";
 
 export async function services() {
   const workflowsPath = require.resolve("./workflows");
@@ -36,6 +37,8 @@ export async function services() {
   } catch (e) {
     console.error("Failed to run services", e);
   }
+
+  await initializeAgentTransport();
 }
 
 services().catch((err) => {
